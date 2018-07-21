@@ -41,6 +41,7 @@ module Sv::Utils
   # Get logging command.
   #
   # @param [Hash] options
+  # @return [String]
   def command_log(options = {}) # rubocop:disable Metrics/MethodLength
     # Variables used for logging
     service = Pathname.new(options.fetch(:from))
@@ -57,10 +58,12 @@ module Sv::Utils
       utils.chmod(0o700, log_dir)
     end
 
-    ['/sbin/chpst', '-u', user, '/sbin/svlogd', '-tt', log_dir]
+    Shellwords.join(['/sbin/chpst', '-u', user, '/sbin/svlogd', '-tt', log_dir])
   end
 
   # @param [Array<String>] command
+  # @param [Hash] options
+  # @return [String]
   def command_run(command, options = {})
     command = ['exec', '/sbin/chpst',
                '-u', (options[:user] || :root).to_s, '--'].push(*command)
