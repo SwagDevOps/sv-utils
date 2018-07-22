@@ -1,0 +1,20 @@
+---
+log:
+  dir:   '/var/log/runit/%<service>s'
+  user:  'root'
+  group: 'root'
+  command:
+    - '/sbin/chpst'
+    - '-u'
+    - '%<user>s'
+    - '/sbin/svlogd'
+    - '-tt'
+    - '%<dir>s'
+run:
+  user:  'root'
+  command:
+    - 'exec'
+    - '/sbin/chpst'
+    - '-u'
+    - '%<user>s'
+    - '--'
