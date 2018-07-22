@@ -26,7 +26,7 @@ module Sv::Utils
 
   # @param [String] filepath
   def configure(filepath = nil)
-    @config = Config.new(filepath)
+    @config = Config.new(filepath).freeze
 
     self
   end
