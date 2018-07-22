@@ -67,8 +67,7 @@ class Sv::Utils::Config < Hash
       return conf if conf.file? and conf.readable?
       break if path.to_path == '/'
     end
-
-    self
+    nil
   end
 
   protected
