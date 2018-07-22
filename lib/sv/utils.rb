@@ -54,7 +54,7 @@ module Sv::Utils
     # Create log dir and fix owner & mode
     FileUtils.tap do |utils|
       utils.mkdir_p(params.fetch(:log_dir))
-      utils.chown(*[:user, :group, :log_dir].map { |k| params.fetch(k) })
+      utils.chown(*[:user, :group, :log_dir].map { |k| params.fetch(k).to_s })
       utils.chmod(0o700, params.fetch(:log_dir))
     end
 
