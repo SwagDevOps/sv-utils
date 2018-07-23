@@ -1,5 +1,5 @@
 ---
-log:
+logger:
   dir:   '/var/log/runit/%<service>s'
   user:  'root'
   group: 'root'
@@ -10,7 +10,7 @@ log:
     - '/sbin/svlogd'
     - '-tt'
     - '%<dir>s'
-run:
+runner:
   user:  'root'
   command:
     - 'exec'

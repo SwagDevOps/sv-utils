@@ -11,18 +11,18 @@
 module Sv
   module Utils
     autoload :VERSION, "#{__dir__}/utils/version"
+    autoload :Config, "#{__dir__}/utils/config"
+    autoload :Util, "#{__dir__}/utils/util"
+    autoload :Runner, "#{__dir__}/utils/runner"
+    autoload :Logger, "#{__dir__}/utils/logger"
   end
 end
 
 # rubocop:enable Style/Documentation
 
-autoload :Pathname, 'pathname'
-autoload :Shellwords, 'shellwords'
-autoload :FileUtils, 'fileutils'
-
 # Utils for Sv
 module Sv::Utils
-  autoload :Config, "#{__dir__}/utils/config"
+  singleton_class.include(self)
 
   # @param [String] filepath
   def configure(filepath = nil)
@@ -38,94 +38,20 @@ module Sv::Utils
     @config
   end
 
-  # Run command
+  # Initialize a ``Runner``.
   #
-  # @param [Array<String>] command
-  def run(command, options = {})
-    command_run(command, options).tap { |cmd| exec(cmd) }
-  end
-
-  # Start logging.
-  #
+  # @param [Array] command
   # @param [Hash] options
-  def log(options = {})
-    make_logdir(options)
-    command_log(options).tap { |cmd| exec(cmd) }
+  # @return [Runner]
+  def runner(command, options = {})
+    Runner.new(command, config, options)
   end
 
-  # Create log dir and fix owner & mode
+  # Initialize a logger.
   #
   # @param [Hash] options
-  def make_logdir(options = {})
-    params = params_log(options)
-
-    FileUtils.tap do |utils|
-      utils.mkdir_p(params.fetch(:log_dir))
-      utils.chown(*[:user, :group, :log_dir].map { |k| params.fetch(k).to_s })
-      utils.chmod(0o700, params.fetch(:log_dir))
-    end
+  # @return [Logger]
+  def logger(options = {})
+    Logger.new(config, options)
   end
-
-  protected
-
-  # rubocop:disable Metrics/MethodLength
-
-  def params_log(options = {}) # rubocop:disable Metrics/AbcSize
-    config  = self.config.fetch('log')
-    from    = options[:from] || self.config.from
-    service = Pathname.new(from).realpath.join('../..').basename.to_path
-    user    = options[:user] || config.fetch('user')
-    group   = options[:group] || config.fetch('group')
-    log_dir = config.fetch('dir') % { service: service }
-    command = config.fetch('command').map(&:to_s).map do |v|
-      v % {
-        user: user,
-        dir: log_dir
-      }
-    end
-
-    {
-      user: user,
-      group: group,
-      service: service,
-      log_dir: log_dir,
-      command: command.map(&:to_s)
-    }
-  end
-
-  def params_run(options = {})
-    config  = self.config.fetch('run')
-    user    = options[:user] || config.fetch('user')
-    command = config.fetch('command').map(&:to_s).map do |v|
-      v % {
-        user: user,
-      }
-    end
-
-    {
-      user: user,
-      command: command.map(&:to_s)
-    }
-  end
-
-  # rubocop:enable Metrics/MethodLength
-
-  # Get logging command.
-  #
-  # @param [Hash] options
-  # @return [String]
-  def command_log(options = {})
-    Shellwords.join(params_log(options).fetch(:command))
-  end
-
-  # @param [Array<String>] command
-  # @param [Hash] options
-  # @return [String]
-  def command_run(command, options = {})
-    cmd = Shellwords.join(params_run(options).fetch(:command) + command)
-
-    "#{cmd} 2>&1"
-  end
-
-  singleton_class.include(self)
 end
