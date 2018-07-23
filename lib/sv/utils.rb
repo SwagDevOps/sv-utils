@@ -49,16 +49,21 @@ module Sv::Utils
   #
   # @param [Hash] options
   def log(options = {})
+    make_logdir(options)
+    command_log(options).tap { |cmd| exec(cmd) }
+  end
+
+  # Create log dir and fix owner & mode
+  #
+  # @param [Hash] options
+  def make_logdir(options = {})
     params = params_log(options)
 
-    # Create log dir and fix owner & mode
     FileUtils.tap do |utils|
       utils.mkdir_p(params.fetch(:log_dir))
       utils.chown(*[:user, :group, :log_dir].map { |k| params.fetch(k).to_s })
       utils.chmod(0o700, params.fetch(:log_dir))
     end
-
-    command_log(options).tap { |cmd| exec(cmd) }
   end
 
   protected
