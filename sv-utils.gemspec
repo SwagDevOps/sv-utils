@@ -6,13 +6,13 @@ Gem::Specification.new do |s|
   s.name        = "sv-utils"
   s.version     = "0.0.1"
   s.date        = "2017-07-21"
-  s.summary     = "Keep hosts up-to-date with docker-api"
-  s.description = "Manage hosts file."
+  s.summary     = "Runit (sv) utils."
+  s.description = "Utils for sv (runit)."
 
   s.licenses    = ["GPL-3.0"]
   s.authors     = ["Dimitri Arrigoni"]
   s.email       = "dimitri@arrigoni.me"
-  s.homepage    = "https://github.com/SwagDevOps/kamaze-docker_hosts"
+  s.homepage    = "https://github.com/SwagDevOps/sv-utils"
 
   # MUST follow the higher required_ruby_version
   # requires version >= 2.3.0 due to safe navigation operator &
@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
     "lib/**/*.yml",
   ].map { |m| Dir.glob(m) }.flatten.sort
 
+  s.add_runtime_dependency("dry-inflector", ["~> 0.1"])
   s.add_runtime_dependency("kamaze-version", ["~> 1.0"])
   s.add_runtime_dependency("sys-proc", [">= 1.1.2", "~> 1.1"])
 end
