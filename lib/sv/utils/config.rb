@@ -88,7 +88,7 @@ class Sv::Utils::Config < Hash
   # @param [Array] locations
   # @return [Pathname]
   def file_from(locations = caller_locations)
-    location = locations.last.path
+    location = ARGV[0] || locations.last.path
 
     Pathname.new(location).realpath
   end
