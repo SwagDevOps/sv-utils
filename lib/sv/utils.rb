@@ -15,6 +15,7 @@ module Sv
     autoload :Util, "#{__dir__}/utils/util"
     autoload :Runner, "#{__dir__}/utils/runner"
     autoload :Logger, "#{__dir__}/utils/logger"
+    autoload :Concern, "#{__dir__}/utils/concern"
   end
 end
 
@@ -22,6 +23,8 @@ end
 
 # Utils for Sv
 module Sv::Utils
+  include Concern::Env
+
   singleton_class.include(self)
 
   # @param [String] filepath
