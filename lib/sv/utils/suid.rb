@@ -9,7 +9,31 @@
 require_relative '../utils'
 autoload :Etc, 'etc'
 
-# Provides ``change_user`` and ``change_privileges`` methods.
+# Provides ``change_user`` method.
+#
+# Mostly an abstraction on top of
+# ``Etc``, ``Process::GID`` and ``Process::UID``.
+#
+# Sample of use:
+#
+# ```ruby
+# Sv::Utils::SUID.change_user(:dimitri) do
+#   pp [Process.uid, Process.euid]
+#   # [1000, 1000]
+#   pp ENV['USER']
+#   # "dimitri"
+#   system('whoami')
+#   # dimitri
+#   system('rm -rf ~/plop; touch ~/plop; ls -l ~/plop')
+#   # -rw-r--r-- 1 dimitri dimitri 0 juil. 24 19:21 /home/dimitri/plop
+# end
+# ```
+#
+# Unless permanent, block use is not encouraged.
+#
+# @see https://ruby-doc.org/stdlib-2.5.0/libdoc/etc/rdoc/Etc.html
+# @see https://ruby-doc.org/core-2.5.0/Process/GID.html
+# @see https://ruby-doc.org/core-2.5.0/Process/UID.html
 module Sv::Utils::SUID
   singleton_class.include(self)
 
@@ -17,7 +41,7 @@ module Sv::Utils::SUID
   # process. If not, it will only set the euid/egid.
   #
   # ``ENV`` will be modified using ``passwd`` entry, to reflect changes.
-  # And will be restored after block execution.
+  # And will be restored after block execution, unless ``permanent``.
   #
   # @param [String|Symbol|Integer] user
   # @param [Boolean] permanently
@@ -28,15 +52,17 @@ module Sv::Utils::SUID
   def change_user(user, permanent = true)
     user_load(user).tap do |u|
       change_privileges(u.uid, u.gid, permanent)
-      ENV.replace(altered_env(u))
+      altered_env(u).tap { |env| ENV.replace(env) }
 
       if block_given?
         yield
         change_privileges(u.proc_uid, u.proc_gid, false) unless permanent
-        ENV.replace(u.proc_env)
+        ENV.replace(u.proc_env) unless permanent
       end
     end
   end
+
+  protected
 
   # If `permanent` is set, will permanently change the uid/gid of the
   # process. If not, it will only set the euid/egid.
@@ -54,8 +80,6 @@ module Sv::Utils::SUID
       k.public_send(method, v)
     end
   end
-
-  protected
 
   # Load user for given username or uid.
   #
