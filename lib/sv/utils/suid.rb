@@ -9,11 +9,11 @@
 require_relative '../utils'
 autoload :Etc, 'etc'
 
-# Provides ``change_user`` method.
+# Provides ``change_user`` and ``change_privileges`` methods.
 module Sv::Utils::SUID
   singleton_class.include(self)
 
-  # If `permanently` is set, will permanently change the uid/gid of the
+  # If `permanent` is set, will permanently change the uid/gid of the
   # process. If not, it will only set the euid/egid.
   #
   # ``ENV`` will be modified using ``passwd`` entry, to reflect changes.
@@ -23,17 +23,35 @@ module Sv::Utils::SUID
   # @param [Boolean] permanently
   # @return [Etc::Passwd]
   #
-  # @note Only ``permanently`` set to ``true`` seems to be reliable,
+  # @note Only ``permanent`` set to ``true`` seems to be reliable,
   #       ``false`` leads to suprises.
-  def change_user(user, permanently = true)
+  def change_user(user, permanent = true)
     user_load(user).tap do |u|
-      util.change_privileges(u.uid, u.gid, permanently)
+      change_privileges(u.uid, u.gid, permanent)
       ENV.replace(altered_env(u))
 
       if block_given?
         yield
+        change_privileges(u.proc_uid, u.proc_gid, false) unless permanent
         ENV.replace(u.proc_env)
       end
+    end
+  end
+
+  # If `permanent` is set, will permanently change the uid/gid of the
+  # process. If not, it will only set the euid/egid.
+  #
+  # @param [Integer] uid
+  # @param [Integer|nil] gid
+  # @param [Boolean] permanent
+  # @return [Array<Integer>]
+  def change_privileges(uid, gid = nil, permanent = true)
+    method = permanent ? :change_privilege : :grant_privilege
+    {
+      Process::GID => gid || Etc.getpwuid(uid).gid,
+      Process::UID => uid,
+    }.map do |k, v|
+      k.public_send(method, v)
     end
   end
 
@@ -77,13 +95,5 @@ module Sv::Utils::SUID
         }.each { |k, v| env[k] = v if env.key?(k) }
       end
     end
-  end
-
-  # @return [Puppet::Util::SUIDManager]
-  def util
-    require 'puppet'
-    require 'puppet/util/suidmanager'
-
-    Puppet::Util::SUIDManager
   end
 end
