@@ -13,7 +13,6 @@ logger:
 runner:
   user:  'root'
   command:
-    - 'exec'
     - '/sbin/chpst'
     - '-u'
     - '%<user>s'

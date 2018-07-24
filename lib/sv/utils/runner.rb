@@ -39,7 +39,7 @@ module Sv::Utils
     def to_s
       cmd = Shellwords.join(params.fetch(:command) + command)
 
-      "#{cmd} 2>&1"
+      "exec #{cmd} 2>&1"
     end
   end
 end
