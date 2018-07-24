@@ -31,7 +31,7 @@ module Sv::Utils
       user    = options[:user] || config.fetch('user')
       group   = options[:group] || config.fetch('group')
       log_dir = config.fetch('dir') % { service: service }
-      command = config.fetch('command').map(&:to_s).map do |v|
+      command = super.fetch(:command).map do |v|
         v % {
           user: user,
           dir: log_dir
