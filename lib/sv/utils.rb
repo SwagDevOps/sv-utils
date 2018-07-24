@@ -13,6 +13,7 @@ module Sv
     autoload :VERSION, "#{__dir__}/utils/version"
     autoload :Config, "#{__dir__}/utils/config"
     autoload :Util, "#{__dir__}/utils/util"
+    autoload :SUID, "#{__dir__}/utils/suid"
     autoload :Runner, "#{__dir__}/utils/runner"
     autoload :Logger, "#{__dir__}/utils/logger"
     autoload :Concern, "#{__dir__}/utils/concern"
@@ -56,5 +57,10 @@ module Sv::Utils
   # @return [Logger]
   def logger(options = {})
     Logger.new(config, options)
+  end
+
+  # @see Sv::Utils::SUID#change_user
+  def change_user(*args, &block)
+    SUID.change_user(*args, &block)
   end
 end
