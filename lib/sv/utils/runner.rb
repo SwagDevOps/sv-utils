@@ -11,7 +11,7 @@ require_relative '../utils'
 module Sv::Utils
   # Service (sv) runner, starts a service.
   class Runner < Util
-    # @return [Array<Strin>]
+    # @return [Array<String>]
     attr_reader :command
 
     # @param [Array] command
@@ -24,7 +24,7 @@ module Sv::Utils
 
     def params
       user    = options[:user] || config.fetch('user')
-      command = config.fetch('command').map(&:to_s).map do |v|
+      command = super.fetch(:command).map do |v|
         v % {
           user: user,
         }
