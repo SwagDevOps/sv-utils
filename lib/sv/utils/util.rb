@@ -13,7 +13,10 @@ autoload :Shellwords, 'shellwords'
 
 # @abstract
 class Sv::Utils::Util
+  # @return [Hash]
   attr_reader :config
+
+  # @return [Hash]
   attr_reader :options
 
   # @param [Hash|Sv::Utils::Config] config
@@ -26,13 +29,13 @@ class Sv::Utils::Util
   # Get params used for command construction.
   #
   # Params are (mostly) a composition between config and options.
-  # At least, command must be defined.
+  # At least, command SHOULD be defined.
   #
   # @see #to_s
   # @return [Hash{Symbol => Object}]
   def params
     {
-      command: 'true',
+      command: config['command'].to_a.map(&:to_s),
     }
   end
 
