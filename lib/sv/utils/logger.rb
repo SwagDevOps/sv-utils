@@ -23,32 +23,27 @@ module Sv::Utils
     end
 
     # rubocop:disable Metrics/MethodLength
-    # rubocop:disable Metrics/AbcSize
 
     def params
       from    = options.fetch(:from)
       service = Pathname.new(from).realpath.join('../..').basename.to_path
-      user    = options[:user] || config.fetch('user')
       group   = options[:group] || config.fetch('group')
       log_dir = config.fetch('dir') % { service: service }
-      command = super.fetch(:command).map do |v|
-        v % {
-          user: user,
-          dir: log_dir
-        }
-      end
 
-      {
-        user: user,
-        group: group,
+      super.merge(
         service: service,
+        group: group,
         log_dir: log_dir,
-        command: command
-      }
+        command: super.fetch(:command).map do |v|
+          v % {
+            user: super.fetch(:user),
+            dir: log_dir
+          }
+        end
+      )
     end
 
     # rubocop:enable Metrics/MethodLength
-    # rubocop:enable Metrics/AbcSize
 
     def call
       make_logdir
