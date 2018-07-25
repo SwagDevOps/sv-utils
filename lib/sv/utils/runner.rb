@@ -32,7 +32,7 @@ module Sv::Utils
 
       {
         user: user,
-        command: command.map(&:to_s)
+        command: command
       }
     end
 
