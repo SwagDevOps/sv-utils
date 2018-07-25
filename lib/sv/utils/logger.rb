@@ -43,7 +43,7 @@ module Sv::Utils
         group: group,
         service: service,
         log_dir: log_dir,
-        command: command.map(&:to_s)
+        command: command
       }
     end
 
