@@ -50,7 +50,7 @@ module Sv::Utils::SUID
   # @note Only ``permanent`` set to ``true`` seems to be reliable,
   #       ``false`` leads to suprises.
   def change_user(user, permanent = true)
-    user_load(user).tap do |u|
+    load_user(user).tap do |u|
       change_privileges(u.uid, u.gid, permanent)
       altered_env(u).tap { |env| ENV.replace(env) }
 
@@ -87,12 +87,12 @@ module Sv::Utils::SUID
   #
   # @param [String|Symbol|Integer] user
   # @return [Etc::Passwd]
-  def user_load(user)
+  def load_user(user)
     user = user.is_a?(Integer) ? Etc.getpwuid(user) : Etc.getpwnam(user.to_s)
 
     user.tap do |u|
       {
-        proc_env: ENV.to_hash.clone,
+        proc_env: ENV.to_hash.clone.freeze,
         proc_uid: Process.uid,
         proc_gid: Etc.getpwuid(Process.uid).gid
       }.each do |k, v|
