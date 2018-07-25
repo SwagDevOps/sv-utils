@@ -44,7 +44,7 @@ module Sv::Utils::SUID
   # And will be restored after block execution, unless ``permanent``.
   #
   # @param [String|Symbol|Integer] user
-  # @param [Boolean] permanently
+  # @param [Boolean] permanent
   # @return [Etc::Passwd]
   #
   # @note Only ``permanent`` set to ``true`` seems to be reliable,
