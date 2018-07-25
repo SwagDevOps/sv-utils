@@ -23,17 +23,13 @@ module Sv::Utils
     end
 
     def params
-      user    = options[:user] || config.fetch('user')
       command = super.fetch(:command).map do |v|
         v % {
-          user: user,
+          user: super.fetch(:user),
         }
       end
 
-      {
-        user: user,
-        command: command
-      }
+      super.merge(command: command)
     end
 
     def to_s
