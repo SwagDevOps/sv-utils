@@ -24,9 +24,7 @@ module Sv::Utils
 
     def params
       command = super.fetch(:command).map do |v|
-        v % {
-          user: super.fetch(:user),
-        }
+        v % { user: super.fetch(:user) }
       end
 
       super.merge(command: command)
