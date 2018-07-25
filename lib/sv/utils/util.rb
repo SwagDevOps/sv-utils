@@ -13,6 +13,8 @@ autoload :Shellwords, 'shellwords'
 
 # @abstract
 class Sv::Utils::Util
+  SUID = Sv::Utils::SUID
+
   # @return [Hash]
   attr_reader :config
 
@@ -22,31 +24,40 @@ class Sv::Utils::Util
   # @param [Hash|Sv::Utils::Config] config
   # @param [Hash] options
   def initialize(config, options = {})
-    @config = config[root_key]
-    @options = options.clone
+    @config = config[root_key].clone.freeze
+    @options = options.clone.freeze
   end
 
   # Get params used for command construction.
   #
   # Params are (mostly) a composition between config and options.
-  # At least, command SHOULD be defined.
+  # At least, ``command`` and ``user`` SHOULD be defined.
   #
   # @see #to_s
   # @return [Hash{Symbol => Object}]
   def params
     {
+      user: options[:user] || config.fetch('user'),
       command: config['command'].to_a.map(&:to_s),
     }
   end
 
-  # Strin representation, is a command line.
+  # String representation, is a command line.
   #
   # @return [String]
   def to_s
     Shellwords.join(params.fetch(:command))
   end
 
+  # Denote call will run in a privileged mode.
+  #
+  # @return [Boolean]
+  def privileged?
+    config['privileged'] == true
+  end
+
   def call
+    SUID.change_user(params.fetch(:user)) if privileged?
     exec(self.to_s)
   end
 
