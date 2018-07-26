@@ -20,12 +20,6 @@ require_relative '../utils'
 module Sv::Utils::DSL
   include Sv::Utils::Concern::Env
 
-  # Prepare and execute a command starting ``svlogd``.
-  Loggerd = Sv::Utils::Logger
-
-  # Prepare and execute a command starting service.
-  Service = Sv::Utils::Runner
-
   singleton_class.include(self)
 
   # Configure form given filepath.
@@ -53,7 +47,7 @@ module Sv::Utils::DSL
   # @param [Hash] options
   # @return [Runner]
   def runner(command, options = {})
-    Service.new(command, config, options)
+    Sv::Utils::Service.new(command, config, options)
   end
 
   # Prepare a command starting ``svlogd``.
@@ -61,7 +55,7 @@ module Sv::Utils::DSL
   # @param [Hash] options
   # @return [Logger]
   def logger(options = {})
-    Loggerd.new(config, options)
+    Sv::Utils::Loggerd.new(config, options)
   end
 
   # @see Sv::Utils::SUID#change_user

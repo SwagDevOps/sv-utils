@@ -10,7 +10,7 @@ require_relative '../utils'
 
 module Sv::Utils
   # Service (sv) runner, starts a service.
-  class Runner < Util
+  class Service < Configurable::Command
     # @return [Array<String>]
     attr_reader :command
 

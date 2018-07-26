@@ -9,17 +9,17 @@
 require_relative '../utils'
 require 'dry/inflector'
 
-autoload :Shellwords, 'shellwords'
-
+# Almost a command retrieved from config.
+#
 # @abstract
-class Sv::Utils::Util
-  SUID = Sv::Utils::SUID
-
+class Sv::Utils::Configurable
   # @return [Hash]
   attr_reader :config
 
   # @return [Hash]
   attr_reader :options
+
+  autoload :Command, "#{__dir__}/configurable/command"
 
   # @param [Hash|Sv::Utils::Config] config
   # @param [Hash] options
@@ -28,37 +28,11 @@ class Sv::Utils::Util
     @options = options.clone.freeze
   end
 
-  # Get params used for command construction.
+  # Get params.
   #
-  # Params are (mostly) a composition between config and options.
-  # At least, ``command`` and ``user`` SHOULD be defined.
-  #
-  # @see #to_s
   # @return [Hash{Symbol => Object}]
   def params
-    {
-      user: options[:user] || config.fetch('user'),
-      command: config['command'].to_a.map(&:to_s),
-    }
-  end
-
-  # String representation, is a command line.
-  #
-  # @return [String]
-  def to_s
-    Shellwords.join(params.fetch(:command))
-  end
-
-  # Denote call will run in a privileged mode.
-  #
-  # @return [Boolean]
-  def privileged?
-    config['privileged'] == true
-  end
-
-  def call
-    SUID.change_user(params.fetch(:user)) if privileged?
-    exec(self.to_s)
+    {}
   end
 
   # @return [String]

@@ -1,16 +1,16 @@
 ---
-logger:
-  dir:   '/var/log/runit/%<service>s'
+loggerd:
   user:  'root'
   group: 'root'
+  log_dir: '/var/log/runit/%<service>s'
   command:
     - '/sbin/chpst'
     - '-u'
     - '%<user>s'
     - '/sbin/svlogd'
     - '-tt'
-    - '%<dir>s'
-runner:
+    - '%<log_dir>s'
+service:
   user:  'root'
   command:
     - '/sbin/chpst'
