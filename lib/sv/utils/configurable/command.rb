@@ -30,11 +30,16 @@ module Sv::Utils
       }
     end
 
+    # @return [Array]
+    def to_a
+      params.fetch(:command)
+    end
+
     # String representation, is a command line.
     #
     # @return [String]
     def to_s
-      Shellwords.join(params.fetch(:command))
+      Shellwords.join(self.to_a)
     end
 
     # Denote call will run in a privileged mode.
