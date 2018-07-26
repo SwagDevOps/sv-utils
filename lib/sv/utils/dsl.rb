@@ -46,7 +46,7 @@ module Sv::Utils::DSL
   # @param [Array] command
   # @param [Hash] options
   # @return [Runner]
-  def runner(command, options = {})
+  def service(command, options = {})
     Sv::Utils::Service.new(command, config, options)
   end
 
@@ -54,7 +54,7 @@ module Sv::Utils::DSL
   #
   # @param [Hash] options
   # @return [Logger]
-  def logger(options = {})
+  def loggerd(options = {})
     Sv::Utils::Loggerd.new(config, options)
   end
 
