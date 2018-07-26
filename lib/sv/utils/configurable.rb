@@ -24,7 +24,7 @@ class Sv::Utils::Configurable
   # @param [Hash|Sv::Utils::Config] config
   # @param [Hash] options
   def initialize(config, options = {})
-    @config = config[root_key].clone.freeze
+    @config = config[identifier].to_h.clone.freeze
     @options = options.clone.freeze
   end
 
@@ -35,8 +35,13 @@ class Sv::Utils::Configurable
     {}
   end
 
+  # Get identifier.
+  #
+  # Used to retrieve specific config
+  # from initialization given config ``Hash``.
+  #
   # @return [String]
-  def root_key
+  def identifier
     inflector = Dry::Inflector.new
 
     self.class.name.split('::')
