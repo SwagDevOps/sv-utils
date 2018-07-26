@@ -45,28 +45,28 @@ Using ``sv-utils``:
 #!/usr/bin/env svrun
 # frozen_string_literal: true
 
-runner(['daemon']).call
+service(['daemon']).call
 ```
 
 ```ruby
 #!/usr/bin/env svrun
 # frozen_string_literal: true
 
-logger.call
+loggerd.call
 ```
 
 Moreover, options as ``:user`` are supported
-by ``logger`` and ``runner`` methods, as:
+by ``loggerd`` and ``service`` methods, as:
 
 ```ruby
-runner(['daemon'], user: :john_doe).call
+service(['daemon'], user: :john_doe).call
 ```
 
-``:user`` and ``:group`` options are also supported by the ``logger`` method,
+``:user`` and ``:group`` options are also supported by ``loggerd`` method,
 but you SHOULD use config,
-unless you need to set different users and/or groups per service.
+unless you need to set different users and/or groups per service logger.
 
-Log directory is created, under the hood, by the ``logger`` call.
+Log directory is created, under the hood, during ``loggerd`` call.
 
 ``sv-utils`` is an attempt to bring [DRY principle][dry-definition]
 to ``runit`` services creation.
