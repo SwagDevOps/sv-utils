@@ -2,10 +2,7 @@
 
 require 'pathname'
 require 'sham'
-require 'sys/proc'
 require_relative 'local'
-
-Sys::Proc.progname = nil
 
 Sham::Config.activate!(Pathname.new(__dir__).join('..').realpath)
 

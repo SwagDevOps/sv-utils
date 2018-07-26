@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Dir.glob('../lib/*.rb').map { |req| require 'req' }
+require 'sys/proc'
+Sys::Proc.progname = 'rspec'
 
 [
   :constants,
@@ -11,3 +13,5 @@ Dir.glob('../lib/*.rb').map { |req| require 'req' }
     req: req.to_s,
   }
 end
+
+require 'sv/utils'
