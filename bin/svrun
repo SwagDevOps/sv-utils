@@ -13,18 +13,6 @@ Pathname.new(__dir__).join('..', 'lib', 'sv-utils.rb').tap do |file|
   require_relative file if file.file?
 end
 
-require 'sys/proc'
+require 'sv/utils/cli'
 
-Pathname.new(__FILE__)
-        .basename.to_s
-        .tap { |progname| Sys::Proc.progname = progname }
-
-require 'sv/utils'
-
-self.extend(Sv::Utils::DSL)
-
-ARGV.each do |param|
-  # rubocop:disable Security/Eval
-  eval(Pathname.new(param).read, TOPLEVEL_BINDING, param)
-  # rubocop:enable Security/Eval
-end
+Sv::Utils::CLI::Runner.new.call(self)
