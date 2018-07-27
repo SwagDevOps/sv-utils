@@ -7,6 +7,7 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative '../cli'
+autoload :Pathname, 'pathname'
 
 module Sv::Utils::CLI
   # Runner provides DSL evaluation.
@@ -19,10 +20,10 @@ module Sv::Utils::CLI
   #
   # require 'sv/utils/cli'
   #
-  # Sv::Utils::CLI::Runner.new.call(self)
+  # Sv::Utils::CLI::Runner.new(['httpd.rb']).call(self)
   # ```
   #
-  # Script file executed by the runner:
+  # Script file (``httpd.rb``) executed by the runner:
   #
   # ```
   # #!/usr/bin/env svrun
@@ -32,14 +33,21 @@ module Sv::Utils::CLI
   class Runner < Command
     DSL = Sv::Utils::DSL
 
+    # Get contents, indexed by filepath.
+    #
+    # @return [Hash{Pathname => String}]
+    def contents
+      arguments.map { |fp| [fp, fp.read] }.to_h.freeze
+    end
+
     # Eval files from ``arguments`` with ``DSL``.
     #
     # @param [Object] context
     def call(context)
-      context.extend(DSL) unless context.is_a?(DSL)
+      contents.each do |fp, content|
+        context.extend(DSL) unless context.is_a?(DSL)
 
-      arguments.each do |fp|
-        context.__send__(:eval, fp.read, TOPLEVEL_BINDING, fp.to_path)
+        context.__send__(:eval, content, TOPLEVEL_BINDING, fp.to_path)
       end
     end
 
