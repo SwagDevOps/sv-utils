@@ -10,4 +10,48 @@ end
 
 describe Sv::Utils::Service, :'utils/service' do
   let(:subject) { described_class.new([], {}) }
+
+  context '#identifier' do
+    it { expect(subject.identifier).to eq('service') }
+  end
+end
+
+describe Sv::Utils::Service, :'utils/service' do
+  let(:command) { nil }
+  let(:config) { { 'service' => { 'command' => command } } }
+  let(:service) { ['sleep', 'infinity'] } # service command
+  let(:subject) { described_class.new(service, config) }
+
+  context '#params' do
+    it 'command (from config) SHOULD be casted to array' do
+      expect(subject.params).to eq(
+        user: :root,
+        command: []
+      )
+    end
+  end
+end
+
+describe Sv::Utils::Service, :'utils/service' do
+  let(:command) { ['/usr/bin/env', '--'] }
+  let(:config) { { 'service' => { 'command' => command } } }
+  let(:service) { ['sleep', 'infinity'] } # service command
+  let(:subject) { described_class.new(service, config) }
+
+  context '#config' do
+    it { expect(subject.config).to eq config[subject.identifier] }
+  end
+
+  context '#params' do
+    it do
+      expect(subject.params).to eq(
+        user: :root,
+        command: command
+      )
+    end
+  end
+
+  context '#to_a' do
+    it { expect(subject.to_a).to eq(command + service) }
+  end
 end
