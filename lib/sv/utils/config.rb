@@ -14,6 +14,11 @@ require 'yaml'
 #
 # Configuration file is search recursively.
 class Sv::Utils::Config < Hash
+  # Get callled ``from``.
+  #
+  # Given ``from`` or
+  # determined using ``ARGV[0]`` (if file) then ``caller_locations``.
+  #
   # @return [Pathname]
   attr_reader :from
 
@@ -88,8 +93,11 @@ class Sv::Utils::Config < Hash
   # @param [Array] locations
   # @return [Pathname]
   def file_from(locations = caller_locations)
-    location = ARGV[0] || locations.last.path
+    origin = nil
+    ARGV[0]&.tap do |fp|
+      origin = Pathname.new(fp).realpath if File.file?(fp)
+    end
 
-    Pathname.new(location).realpath
+    Pathname.new(origin || locations.last.path).realpath
   end
 end
