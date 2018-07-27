@@ -30,6 +30,14 @@ describe Sv::Utils::Service, :'utils/service' do
       )
     end
   end
+
+  context '#to_a' do
+    it { expect(subject.to_a).to eq(service) }
+  end
+
+  context '#to_s' do
+    it { expect(subject.to_s).to eq('sleep infinity 2>&1') }
+  end
 end
 
 describe Sv::Utils::Service, :'utils/service' do
@@ -53,5 +61,9 @@ describe Sv::Utils::Service, :'utils/service' do
 
   context '#to_a' do
     it { expect(subject.to_a).to eq(command + service) }
+  end
+
+  context '#to_s' do
+    it { expect(subject.to_s).to eq('/usr/bin/env -- sleep infinity 2>&1') }
   end
 end
