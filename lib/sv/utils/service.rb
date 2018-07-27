@@ -18,7 +18,8 @@ module Sv::Utils
     # @param [Hash|Sv::Utils::Config] config
     # @param [Hash] options
     def initialize(command, config, options = {})
-      @command = command.to_a.map(&:to_s)
+      @command = command.to_a.map(&:to_s).freeze
+
       super(config, options)
     end
 
@@ -30,10 +31,12 @@ module Sv::Utils
       super.merge(command: command)
     end
 
-    def to_s
-      cmd = Shellwords.join(params.fetch(:command) + command)
+    def to_a
+      super + command
+    end
 
-      "#{cmd} 2>&1"
+    def to_s
+      "#{super} 2>&1"
     end
   end
 end
