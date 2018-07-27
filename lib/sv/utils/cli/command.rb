@@ -11,12 +11,18 @@ require 'sys/proc'
 autoload :OptionParser, 'optparse'
 
 # Command Line Interface (CLI)
+#
 # @abstract
 class Sv::Utils::CLI::Command
+  # @return [Array<String>]
   attr_reader :arguments
 
+  # @return [Hash]
   attr_reader :options
 
+  # Get progname.
+  #
+  # @return [String]
   attr_reader :progname
 
   # @param [Array] argv
@@ -59,8 +65,7 @@ class Sv::Utils::CLI::Command
 
   protected
 
-  attr_reader :argv
-
+  # @type [Hash]
   attr_writer :options
 
   # @param [Array] argv
