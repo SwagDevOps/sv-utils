@@ -13,3 +13,15 @@ describe Sv::Utils::DSL, :'utils/dsl' do
   it { expect(subject).to respond_to(:change_user).with(1).arguments }
   it { expect(subject).to respond_to(:change_user).with(2).arguments }
 end
+
+describe Sv::Utils::DSL, :'utils/dsl' do
+  let(:described_class) { Class.new { include Sv::Utils::DSL } }
+  # let(:subject) do
+  #   described_class.new.tap { |subject| subject.configure(__FILE__) }
+  # end
+
+  context '#config' do
+    it { expect(subject.config).to be_a(Hash) }
+    it { expect(subject.config).to be_a(Sv::Utils::Config) }
+  end
+end
