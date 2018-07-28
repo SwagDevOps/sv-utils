@@ -22,10 +22,18 @@ class Sv::Utils::Config < Hash
   # @return [Pathname]
   attr_reader :from
 
-  # @param [String] from begin to search config at this point.
+  # @param [String] from
+  #
+  # @note Unless a YAML is given,
+  #       begin to search config at this (``from``) point.
   def initialize(from = nil)
-    @from = Pathname.new(from || file_from(caller_locations)).realpath.freeze
-    @file = config.freeze
+    if self.class.__send__(:yml?, from)
+      @from = Pathname.new(from).freeze
+      @file = @from
+    else
+      @from = Pathname.new(from || file_from(caller_locations)).realpath.freeze
+      @file = config.freeze
+    end
 
     load_file(Pathname.new(__dir__).join('config.yml'))
     load_file(self.file) if self.file
@@ -46,6 +54,8 @@ class Sv::Utils::Config < Hash
   end
 
   class << self
+    protected
+
     # @param target [Hash] target **altered** hash
     # @param origin [Hash]
     # @return the modified target hash
@@ -60,6 +70,22 @@ class Sv::Utils::Config < Hash
         newval
       end
     end
+
+    # Denote given file path seems to be a YAML file.
+    #
+    # @param [String|Pathname|nil] filepath
+    # @return [Boolean]
+    def yml?(filepath)
+      return false if filepath.nil?
+
+      fp = Pathname.new(filepath)
+      [
+        fp.to_s.split('.').size >= 2,
+        ['yml', 'yaml'].include?(fp.to_s.split('.').last),
+      ].uniq == [true]
+    end
+
+    alias yaml? yml?
   end
 
   # @return [Pathname|nil]
@@ -84,7 +110,9 @@ class Sv::Utils::Config < Hash
   # @return [Hash]
   def load_file(filepath)
     YAML.safe_load(Pathname.new(filepath).read).to_h.tap do |loaded|
-      self.class.deep_merge(self.to_h, loaded).each { |k, v| self[k] = v }
+      self.class
+          .__send__(:deep_merge, self.to_h, loaded)
+          .each { |k, v| self[k] = v }
     end
   end
 
