@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 # frozen_string_literal: true
 
 # Copyright (C) 2017-2018 Dimitri Arrigoni <dimitri@arrigoni.me>
@@ -7,12 +6,9 @@
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-require 'pathname'
+require_relative '../cli'
 
-Pathname.new(__dir__).join('..', 'lib', 'sv-utils.rb').tap do |file|
-  require_relative file if file.file?
+# Commands.
+module Sv::Utils::CLI::Commands
+  autoload :Runner, "#{__dir__}/commands/runner"
 end
-
-require 'sv/utils/cli'
-
-Sv::Utils::CLI.call(:runner)

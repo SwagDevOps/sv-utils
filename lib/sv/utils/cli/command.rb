@@ -7,6 +7,7 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative '../cli'
+require_relative 'empty'
 require 'sys/proc'
 autoload :OptionParser, 'optparse'
 
@@ -89,5 +90,10 @@ class Sv::Utils::CLI::Command
         exit
       end
     end
+  end
+
+  # @return [Binding]
+  def empty_binding
+    Sv::Utils::CLI::Empty.binding
   end
 end
