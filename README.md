@@ -43,14 +43,12 @@ Using ``sv-utils``:
 
 ```ruby
 #!/usr/bin/env svrun
-# frozen_string_literal: true
 
 service(['daemon']).call
 ```
 
 ```ruby
 #!/usr/bin/env svrun
-# frozen_string_literal: true
 
 loggerd.call
 ```
