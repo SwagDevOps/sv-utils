@@ -78,11 +78,12 @@ class Sv::Utils::Config < Hash
     def yml?(filepath)
       return false if filepath.nil?
 
-      fp = Pathname.new(filepath)
-      [
-        fp.to_s.split('.').size >= 2,
-        ['yml', 'yaml'].include?(fp.to_s.split('.').last),
-      ].uniq == [true]
+      filepath.to_s.split('.').keep_if { |s| !s.empty? }.tap do |parts|
+        return [
+          parts.size >= 2,
+          ['yml', 'yaml'].include?(parts.last),
+        ].uniq == [true]
+      end
     end
 
     alias yaml? yml?
