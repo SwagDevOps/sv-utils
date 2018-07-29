@@ -89,8 +89,8 @@ class Sv::Utils::CLI::Command
 
   # @param [Array] argv
   # @return [self]
-  def parse!(argv = ARGV)
-    parser.parse!(argv.clone)
+  def parse!(argv)
+    parser.parse!(argv)
     self
   rescue OptionParser::InvalidOption => e
     warn(e)
