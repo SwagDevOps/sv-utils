@@ -47,8 +47,10 @@ class Sv::Utils::CLI::Command
   #
   # @param [String] progname
   def progname=(progname)
-    Sys::Proc.progname = Pathname.new(progname).basename.to_s
-    @progname = progname
+    Pathname.new(progname.to_s).basename.to_s.tap do |name|
+      Sys::Proc.progname = name
+      @progname = name
+    end
   end
 
   # Get version.
