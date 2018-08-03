@@ -14,6 +14,9 @@ require 'yaml'
 #
 # Configuration file is search recursively.
 class Sv::Utils::Config < Hash
+  # @return [Pathname]
+  attr_accessor :file
+
   # @param [String] file
   def initialize(file = nil)
     @file = Pathname.new(file || self.class.filepath)
@@ -23,11 +26,8 @@ class Sv::Utils::Config < Hash
     load_file(self.file)
   end
 
-  # Get filepath for loaded config.
-  #
-  # @return [String|nil]
-  def filepath
-    self.file&.to_path
+  def to_path
+    self.file.to_path
   end
 
   class << self
@@ -64,9 +64,6 @@ class Sv::Utils::Config < Hash
   end
 
   protected
-
-  # @return [Pathname|nil]
-  attr_accessor :file
 
   # @param [String] filepath
   # @return [Hash]
