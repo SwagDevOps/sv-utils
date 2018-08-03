@@ -69,14 +69,21 @@ class Sv::Utils::Config < Hash
   # @return [Hash]
   # @raise [Errno::EINVAL]
   def load_file(filepath)
-    YAML.safe_load(Pathname.new(filepath).read).tap do |loaded|
-      unless loaded.respond_to?(:to_h)
-        raise Errno::EINVAL, "Invalid format @ load_file - #{filepath}"
-      end
+    message = "Invalid format @ load_file - #{filepath}"
 
-      self.class
-          .__send__(:deep_merge, self.to_h, loaded)
-          .each { |k, v| self[k] = v }
+    YAML.safe_load(Pathname.new(filepath).read).tap do |loaded|
+      raise Errno::EINVAL, message unless loaded.respond_to?(:to_h)
+
+      load_loaded(loaded, message).each { |k, v| self[k] = v }
     end
+  end
+
+  # @param [Hash] loaded
+  # @param [String] message
+  # @return [Hash]
+  def load_loaded(loaded, message = 'Invalid format')
+    self.class.__send__(:deep_merge, self.to_h, loaded.to_h)
+  rescue StandardError
+    raise Errno::EINVAL, message
   end
 end
