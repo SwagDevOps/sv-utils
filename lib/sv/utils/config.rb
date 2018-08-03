@@ -14,29 +14,13 @@ require 'yaml'
 #
 # Configuration file is search recursively.
 class Sv::Utils::Config < Hash
-  # Get callled ``from``.
-  #
-  # Given ``from`` or
-  # determined using ``ARGV[0]`` (if file) then ``caller_locations``.
-  #
-  # @return [Pathname]
-  attr_reader :from
-
-  # @param [String] from
-  #
-  # @note Unless a YAML is given,
-  #       begin to search config at this (``from``) point.
-  def initialize(from = nil)
-    if self.class.__send__(:yml?, from)
-      @from = Pathname.new(from).freeze
-      @file = @from
-    else
-      @from = Pathname.new(from || file_from(caller_locations)).realpath.freeze
-      @file = config.freeze
-    end
+  # @param [String] file
+  def initialize(file = nil)
+    @file = Pathname.new(file || self.class.filepath)
 
     load_file(Pathname.new(__dir__).join('config.yml'))
-    load_file(self.file) if self.file&.readable?
+    return if file.nil? and !self.file&.readable?
+    load_file(self.file)
   end
 
   # Get config file filename.
@@ -129,18 +113,5 @@ class Sv::Utils::Config < Hash
           .__send__(:deep_merge, self.to_h, loaded)
           .each { |k, v| self[k] = v }
     end
-  end
-
-  # Get file automagically
-  #
-  # @param [Array] locations
-  # @return [Pathname]
-  def file_from(locations = caller_locations)
-    origin = nil
-    ARGV[0]&.tap do |fp|
-      origin = Pathname.new(fp).realpath if File.file?(fp)
-    end
-
-    Pathname.new(origin || locations.last.path).realpath
   end
 end
