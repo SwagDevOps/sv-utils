@@ -32,3 +32,37 @@ describe Sv::Utils::Config, :'utils/config' do
     it { expect(subject.keys).to eq(%w[loggerd service control]) }
   end
 end
+
+describe Sv::Utils::Config, :'utils/config' do
+  include FileUtils
+
+  let(:sample) { sham!(:configs).samples.fetch('unreadable') }
+  before(:each) { chmod(0o200, sample) }
+  after(:each) { chmod(0o644, sample) }
+
+  context '#new' do
+    it 'should raise' do
+      expect { described_class.new(sample) }.to raise_error(Errno::EACCES)
+    end
+  end
+end
+
+describe Sv::Utils::Config, :'utils/config' do
+  let(:sample) { sham!(:configs).samples.fetch('string') }
+
+  context '#new' do
+    it 'should raise' do
+      expect { described_class.new(sample) }.to raise_error(Errno::EINVAL)
+    end
+  end
+end
+
+describe Sv::Utils::Config, :'utils/config' do
+  let(:sample) { sham!(:configs).samples.fetch('invalid') }
+
+  context '#new' do
+    it 'should raise' do
+      expect { described_class.new(sample) }.to raise_error(Psych::SyntaxError)
+    end
+  end
+end

@@ -1,0 +1,6 @@
+# before(:each) { chmod(0200, sample) }
+# after(:each) { chmod(0644, sample) }
+---
+loggerd:
+  user:  'log'
+  group: 'log'
