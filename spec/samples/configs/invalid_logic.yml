@@ -1,0 +1,4 @@
+# should raise Errno::EINVAL
+---
+loggerd:
+service:
