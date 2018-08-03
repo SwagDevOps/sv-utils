@@ -77,7 +77,7 @@ describe Sv::Utils::Config, :'utils/config' do
   end
 end
 
-describe Sv::Utils::Config, :'utils/config', :wip do
+describe Sv::Utils::Config, :'utils/config' do
   let(:sample) { sham!(:configs).samples.fetch('override') }
   let(:subject) { described_class.new(sample) }
 
@@ -86,7 +86,7 @@ describe Sv::Utils::Config, :'utils/config', :wip do
   end
 
   context '#["loggerd"]["group"]' do
-    it { expect(subject['loggerd']['group']).to eq('svlog') }
+    it { expect(subject['loggerd']['group']).to eq('log') }
   end
 
   context '#["service"].fetch("command")' do

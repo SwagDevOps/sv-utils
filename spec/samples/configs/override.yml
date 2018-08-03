@@ -1,0 +1,20 @@
+# testing override capacities
+---
+loggerd:
+  user:  'svlog'
+  group: 'log'
+  privileged: true
+  log_dir: '/var/svlog/%<service>s'
+  command:
+    - '/sbin/svlogd'
+    - '-tt'
+    - '%<log_dir>s'
+service:
+  user:  'root'
+  privileged: true
+  command:    # nil
+control:
+  futils: 'dry_run'
+  paths:
+    - '/etc/service'
+    - '/var/run/sv'
