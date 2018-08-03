@@ -12,6 +12,8 @@ class Sv::Utils::CLI::Command
   # Provides config.
   #
   # Config attribute + command option.
+  #
+  # @abstract
   class Configurable < self
     Config = Sv::Utils::Config
 
