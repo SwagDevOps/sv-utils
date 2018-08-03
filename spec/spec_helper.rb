@@ -15,3 +15,5 @@ Sys::Proc.progname = 'rspec'
 end
 
 require 'sv/utils'
+
+autoload :Fileutils, 'fileutils'
