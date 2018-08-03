@@ -21,8 +21,21 @@ class Sv::Utils::CLI::Command
     attr_reader :config
 
     def setup
-      @options = { config: Config.filepath }.merge(options)
-      @config = Config.new(@options[:config])
+      @options = { config: nil }.merge(options)
+      self.config = @options[:config]
+    end
+
+    protected
+
+    # Set config from given filepath.
+    #
+    # @param [String|nil|Pathname] filepath
+    def config=(filepath)
+      @config = Config.new(filepath)
+    rescue StandardError => e
+      raise(e) unless e.class.name =~ /^Errno::/
+      warn(e)
+      exit(e.class.const_get(:Errno))
     end
 
     class << self
