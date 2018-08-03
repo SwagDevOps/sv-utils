@@ -16,6 +16,8 @@ autoload :Pathname, 'pathname'
 #
 # @abstract
 class Sv::Utils::CLI::Command
+  autoload :Configurable, "#{__dir__}/command/configurable"
+
   # @return [Array<String>]
   attr_reader :arguments
 
