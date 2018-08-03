@@ -36,14 +36,14 @@ class Sv::Utils::Config < Hash
     end
 
     load_file(Pathname.new(__dir__).join('config.yml'))
-    load_file(self.file) if self.file
+    load_file(self.file) if self.file&.readable?
   end
 
-  # Get filename for searched config.
+  # Get config file filename.
   #
   # @return [String]
   def filename
-    self.class.name.split('::')[0..1].map(&:downcase).join('-')
+    self.class.filename
   end
 
   # Get filepath for loaded config.
@@ -54,6 +54,20 @@ class Sv::Utils::Config < Hash
   end
 
   class << self
+    # Get config filename (without extension).
+    #
+    # @return [String]
+    def filename
+      self.name.split('::')[0..1].map(&:downcase).join('-')
+    end
+
+    # Get default filepath.
+    #
+    # @return [String] ``/etc/sv-utils.yml``
+    def filepath
+      Pathname.new('/etc').join("#{filename}.yml").to_path
+    end
+
     protected
 
     # @param target [Hash] target **altered** hash
