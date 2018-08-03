@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 Dir.glob('../lib/*.rb').map { |req| require 'req' }
-require 'sys/proc'
-Sys::Proc.progname = 'rspec'
+
+if Gem::Specification.find_all_by_name('sys-proc').any?
+  require 'sys/proc'
+
+  Sys::Proc.progname = 'rspec'
+end
 
 [
   :constants,
