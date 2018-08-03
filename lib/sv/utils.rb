@@ -18,6 +18,7 @@ module Sv
     autoload :DSL, "#{__dir__}/utils/dsl"
     autoload :Service, "#{__dir__}/utils/service"
     autoload :Loggerd, "#{__dir__}/utils/loggerd"
+    autoload :Control, "#{__dir__}/utils/control"
     autoload :Concern, "#{__dir__}/utils/concern"
     autoload :Empty, "#{__dir__}/utils/empty"
   end
