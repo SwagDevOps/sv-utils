@@ -23,13 +23,6 @@ class Sv::Utils::Config < Hash
     load_file(self.file)
   end
 
-  # Get config file filename.
-  #
-  # @return [String]
-  def filename
-    self.class.filename
-  end
-
   # Get filepath for loaded config.
   #
   # @return [String|nil]
@@ -68,36 +61,6 @@ class Sv::Utils::Config < Hash
         newval
       end
     end
-
-    # Denote given file path seems to be a YAML file.
-    #
-    # @param [String|Pathname|nil] filepath
-    # @return [Boolean]
-    def yml?(filepath)
-      return false if filepath.nil?
-
-      filepath.to_s.split('.').keep_if { |s| !s.empty? }.tap do |parts|
-        return [
-          parts.size >= 2,
-          ['yml', 'yaml'].include?(parts.last),
-        ].uniq == [true]
-      end
-    end
-
-    alias yaml? yml?
-  end
-
-  # @return [Pathname|nil]
-  def config
-    path = Pathname.new(self.from)
-    loop do
-      path = path.dirname
-      conf = path.join("#{filename}.yml")
-
-      return conf if conf.file? and conf.readable?
-      break if path.to_path == '/'
-    end
-    nil
   end
 
   protected
