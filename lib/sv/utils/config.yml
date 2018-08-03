@@ -18,7 +18,7 @@ service:
     - '%<user>s'
     - '--'
 control:
-  futils: 'dry_run'
+  futils: 'verbose'
   paths:
     - '/etc/sv'
     - '/etc/service'
