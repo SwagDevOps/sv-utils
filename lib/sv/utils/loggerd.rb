@@ -19,20 +19,33 @@ module Sv::Utils
     def initialize(config, options = {})
       super
 
-      @options = { from: config.from }.merge(options.clone).freeze
+      @options = options.clone.freeze
+    end
+
+    # Get service name (log target).
+    #
+    # @return [String]
+    def service
+      return options[:service] if options[:service]
+
+      ARGV.fetch(0).tap do |fp|
+        return Pathname.new(fp).realpath.join('../..').basename.to_path
+      end
+    end
+
+    # @return [String]
+    def log_dir
+      config.fetch('log_dir') % {
+        service: service
+      }
     end
 
     # rubocop:disable Metrics/MethodLength
 
     def params
-      from    = options.fetch(:from)
-      service = Pathname.new(from).realpath.join('../..').basename.to_path
-      group   = options[:group] || config.fetch('group')
-      log_dir = config.fetch('log_dir') % { service: service }
-
       super.merge(
         service: service,
-        group: group,
+        group: options[:group] || config.fetch('group'),
         log_dir: log_dir,
         command: super.fetch(:command).map do |v|
           v % {
