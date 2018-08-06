@@ -7,6 +7,7 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative '../configurable'
+autoload :Etc, 'etc'
 autoload :Shellwords, 'shellwords'
 
 module Sv::Utils
@@ -23,16 +24,25 @@ module Sv::Utils
     #
     # @see #to_s
     # @return [Hash{Symbol => Object}]
-    def params
+    def params # rubocop:disable Metrics/AbcSize
       {
         user: options[:user] || config['user'] || :root,
+        group: options[:group] || config['group'],
         command: config['command'].to_a.map(&:to_s),
-      }
+      }.tap do |params|
+        Etc.getpwnam(params[:user].to_s).tap do |user|
+          params[:group] ||= Etc.getgrgid(user.gid).name
+        end
+      end
     end
 
     # @return [Array]
     def to_a
-      params.fetch(:command)
+      self.params.tap do |params|
+        return params.fetch(:command).map do |v|
+          v.to_s % params.reject { |k| k == :command }
+        end
+      end
     end
 
     # String representation, is a command line.
@@ -50,7 +60,10 @@ module Sv::Utils
     end
 
     def call
-      suid.change_user(params.fetch(:user)) if privileged?
+      "#{params.fetch(:user)}:#{params.fetch(:group)}".tap do |run_as|
+        suid.change_user(run_as) if privileged?
+      end
+
       exec(self.to_s)
     end
 

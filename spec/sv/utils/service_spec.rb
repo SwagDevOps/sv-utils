@@ -22,11 +22,12 @@ describe Sv::Utils::Service, :'utils/service' do
   let(:service) { ['sleep', 'infinity'] } # service command
   let(:subject) { described_class.new(service, config) }
 
-  context '#params' do
+  context '#params.sort.to_h' do
     it 'command (from config) SHOULD be casted to array' do
-      expect(subject.params).to eq(
-        user: :root,
-        command: []
+      expect(subject.params.sort.to_h).to eq(
+        command: [],
+        group: 'root',
+        user: :root
       )
     end
   end
@@ -46,15 +47,16 @@ describe Sv::Utils::Service, :'utils/service' do
   let(:service) { ['sleep', 'infinity'] } # service command
   let(:subject) { described_class.new(service, config) }
 
-  context '#config' do
-    it { expect(subject.config).to eq config[subject.identifier] }
+  context '#config.sort.to_h' do
+    it { expect(subject.config).to eq(config[subject.identifier]) }
   end
 
-  context '#params' do
+  context '#params.sort.to_h' do
     it do
-      expect(subject.params).to eq(
-        user: :root,
-        command: command
+      expect(subject.params.sort.to_h).to eq(
+        command: command,
+        group: 'root',
+        user: :root
       )
     end
   end

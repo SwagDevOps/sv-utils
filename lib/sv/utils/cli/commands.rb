@@ -11,4 +11,5 @@ require_relative '../cli'
 # Commands.
 module Sv::Utils::CLI::Commands
   autoload :Runner, "#{__dir__}/commands/runner"
+  autoload :Control, "#{__dir__}/commands/control"
 end

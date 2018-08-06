@@ -32,11 +32,12 @@ describe Sv::Utils::Configurable::Command, :'utils/configurable/command' do
     it { expect(subject.config).to eq config[subject.identifier] }
   end
 
-  context '#params' do
+  context '#params.sort.to_h' do
     it do
-      expect(subject.params).to eq(
-        user: :root,
-        command: command
+      expect(subject.params.sort.to_h).to eq(
+        command: command,
+        group: 'root',
+        user: :root
       )
     end
   end

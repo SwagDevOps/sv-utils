@@ -1,7 +1,6 @@
 ---
 loggerd:
   user:  'root'
-  group: 'root'
   log_dir: '/var/log/runit/%<service>s'
   command:
     - '/sbin/chpst'
@@ -15,7 +14,7 @@ service:
   command:
     - '/sbin/chpst'
     - '-u'
-    - '%<user>s'
+    - '%<user>s:%<group>s'
     - '--'
 control:
   futils: 'verbose'

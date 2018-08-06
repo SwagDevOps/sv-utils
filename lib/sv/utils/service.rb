@@ -23,16 +23,10 @@ module Sv::Utils
       super(config, options)
     end
 
-    def params
-      command = super.fetch(:command).map do |v|
-        v % { user: super.fetch(:user) }
-      end
-
-      super.merge(command: command)
-    end
-
     def to_a
-      super + command
+      super + command.map do |v|
+        v.to_s % params.reject { |k| k == :command }
+      end
     end
 
     def to_s

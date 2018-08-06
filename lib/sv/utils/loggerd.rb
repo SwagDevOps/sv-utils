@@ -40,23 +40,9 @@ module Sv::Utils
       }
     end
 
-    # rubocop:disable Metrics/MethodLength
-
     def params
-      super.merge(
-        service: service,
-        group: options[:group] || config.fetch('group'),
-        log_dir: log_dir,
-        command: super.fetch(:command).map do |v|
-          v % {
-            user: super.fetch(:user),
-            log_dir: log_dir
-          }
-        end
-      )
+      super.merge(service: service, log_dir: log_dir)
     end
-
-    # rubocop:enable Metrics/MethodLength
 
     def call
       make_logdir
