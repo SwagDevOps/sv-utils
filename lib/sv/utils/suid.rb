@@ -110,7 +110,7 @@ module Sv::Utils::SUID
 
     user_ident.to_s.split(':').tap do |parts|
       Etc.getpwnam(parts.fetch(0)).tap do |user|
-        user.gid = Etc.getgrgid(parts.fetch(1)).gid if parts[1]
+        user.gid = Etc.getgrnam(parts.fetch(1)).gid if parts[1]
 
         return user
       end
