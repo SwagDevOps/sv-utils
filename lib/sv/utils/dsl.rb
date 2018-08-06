@@ -50,13 +50,21 @@ module Sv::Utils::DSL
     Sv::Utils::Service.new(command, config, options)
   end
 
-  # Prepare a command starting ``svlogd``.
+  # Prepare a command starting ``svlogd``
+  #
+  # Samples of use:
+  #
+  # ```ruby
+  # loggerd.to_a
+  # loggerd(user: :dimitri).to_a
+  # loggerd('getent passwd %<user>s').to_a
+  # loggerd('getent passwd %<user>s', user: :dimitri).to_a
+  # ```
   #
   # @return [Sv::Utils::Loggerd]
   def loggerd(*args)
-    args.last.tap do |params|
-      return Sv::Utils::Loggerd
-             .new(args.size == 1 ? nil : args.fetch(0), config, params)
+    (args.last.is_a?(Hash) ? args.delete_at(-1) : {}).tap do |params|
+      return Sv::Utils::Loggerd.new(args[0], config, params)
     end
   end
 
