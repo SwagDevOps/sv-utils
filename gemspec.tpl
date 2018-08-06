@@ -4,6 +4,8 @@
 <?rb singleton_class
        .__send__(:define_method, :quote) { |input| input.to_s.inspect } ?>
 
+require 'pathname'
+
 Gem::Specification.new do |s|
   s.name        = #{quote(@name)}
   s.version     = #{quote(@version)}
@@ -21,7 +23,10 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 2.3.0"
   s.require_paths = ["lib"]
   s.bindir        = "bin"
-  s.executables   = ["svrun"]
+  s.executables   = Dir.glob("%s/*" % s.bindir)
+                       .map { |f| Pathname.new(f) }
+                       .keep_if { |f| f.file? and f.executable? }
+                       .map { |f| f.basename.to_s }
   s.files = [
     ".yardopts",
     "bin/*",
