@@ -49,7 +49,9 @@ module Sv::Utils::SUID
   #
   # @note Only ``permanent`` set to ``true`` seems to be reliable,
   #       ``false`` leads to suprises.
-  def change_user(user, permanent = true)
+  def change_user(user, options = {})
+    permanent = options.key?(:permanent) ? options[:permanent] : true
+
     load_user(user).tap do |u|
       change_privileges(u.uid, u.gid, permanent)
       altered_env(u).tap { |env| ENV.replace(env) }
@@ -83,20 +85,34 @@ module Sv::Utils::SUID
 
   # Load user for given username or uid.
   #
-  # Keep track of previous state using added ``proc_`` methods.
+  # Supports UNIX format "{user}:[group]"
+  # to load user with expected ``gid``.
+  # Keeps track of previous state using added ``proc_`` methods.
   #
   # @param [String|Symbol|Integer] user
   # @return [Etc::Passwd]
   def load_user(user)
-    user = user.is_a?(Integer) ? Etc.getpwuid(user) : Etc.getpwnam(user.to_s)
-
-    user.tap do |u|
+    fetch_user(user).tap do |u|
       {
         proc_env: ENV.to_hash.clone.freeze,
         proc_uid: Process.uid,
         proc_gid: Etc.getpwuid(Process.uid).gid
       }.each do |k, v|
         u.singleton_class.__send__(:define_method, k) { v }
+      end
+    end
+  end
+
+  # @param [String|Symbol|Integer] user
+  # @return [Etc::Passwd]
+  def fetch_user(user_ident)
+    return Etc.getpwuid(user_ident) if user_ident.is_a?(Integer)
+
+    user_ident.to_s.split(':').tap do |parts|
+      Etc.getpwnam(parts.fetch(0)).tap do |user|
+        user.gid = Etc.getgrgid(parts.fetch(1)).gid if parts[1]
+
+        return user
       end
     end
   end
