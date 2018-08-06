@@ -19,11 +19,7 @@ module Sv::Utils
     # @param [Hash|Sv::Utils::Config] config
     # @param [Hash] options
     def initialize(command, config, options = {})
-      unless command.is_a?(Array)
-        @command = Shellwords.split(command.to_s)
-      end
-
-      @command = command.to_a.map(&:to_s).freeze
+      self.command = command
 
       super(config, options)
     end
@@ -36,6 +32,17 @@ module Sv::Utils
 
     def to_s
       "#{super} 2>&1"
+    end
+
+    protected
+
+    # Set command.
+    #
+    # @param [Array|String|Object] command
+    def command=(command)
+      command = Shellwords.split(command.to_s) unless command.is_a?(Array)
+
+      @command = command.to_a.map(&:to_s).freeze
     end
   end
 end
