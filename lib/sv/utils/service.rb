@@ -12,18 +12,6 @@ autoload :Shellwords, 'shellwords'
 module Sv::Utils
   # Service (sv) runner, starts a service.
   class Service < Configurable::Command
-    # @return [Array<String>]
-    attr_reader :command
-
-    # @param [Array|String|Object] command
-    # @param [Hash|Sv::Utils::Config] config
-    # @param [Hash] options
-    def initialize(command, config, options = {})
-      self.command = command
-
-      super(config, options)
-    end
-
     def to_a
       super + command.map do |v|
         v.to_s % params.reject { |k| k == :command }
@@ -32,17 +20,6 @@ module Sv::Utils
 
     def to_s
       "#{super} 2>&1"
-    end
-
-    protected
-
-    # Set command.
-    #
-    # @param [Array|String|Object] command
-    def command=(command)
-      command = Shellwords.split(command.to_s) unless command.is_a?(Array)
-
-      @command = command.to_a.map(&:to_s).freeze
     end
   end
 end

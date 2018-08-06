@@ -17,6 +17,18 @@ module Sv::Utils
   #
   # @abstract
   class Configurable::Command < Configurable
+    # @return [Array<String>]
+    attr_reader :command
+
+    # @param [Array|String|Object] command
+    # @param [Hash|Sv::Utils::Config] config
+    # @param [Hash] options
+    def initialize(command, config, options = {})
+      self.command = command
+
+      super(config, options)
+    end
+
     # Get params used for command construction.
     #
     # Params are (mostly) a composition between config and options.
@@ -68,6 +80,15 @@ module Sv::Utils
     end
 
     protected
+
+    # Set command.
+    #
+    # @param [Array|String|Object] command
+    def command=(command)
+      command = Shellwords.split(command.to_s) unless command.is_a?(Array)
+
+      @command = command.to_a.map(&:to_s).freeze
+    end
 
     # @return [Sv::Utils::SUID]
     def suid

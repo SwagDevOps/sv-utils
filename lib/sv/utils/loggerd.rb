@@ -14,11 +14,13 @@ autoload :FileUtils, 'fileutils'
 module Sv::Utils
   # Service (sv) logger, starts logger.
   class Loggerd < Configurable::Command
+    # @param [Array|String|Object] command
     # @param [Hash|Sv::Utils::Config] config
     # @param [Hash] options
-    def initialize(config, options = {})
+    def initialize(command, config, options = {})
       super
 
+      @command = nil if command.nil?
       @options = options.clone.freeze
     end
 
@@ -41,7 +43,9 @@ module Sv::Utils
     end
 
     def params
-      super.merge(service: service, log_dir: log_dir)
+      super.merge(service: service, log_dir: log_dir).tap do |params|
+        params[:command] = command if command
+      end
     end
 
     def call

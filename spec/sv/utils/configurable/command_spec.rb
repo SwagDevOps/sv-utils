@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Sv::Utils::Configurable::Command, :'utils/configurable/command' do
-  let(:subject) { described_class.new({}) }
+  let(:subject) { described_class.new(nil, {}) }
 
   it { expect(subject).to be_a(Sv::Utils::Configurable) }
 
@@ -15,7 +15,7 @@ describe Sv::Utils::Configurable::Command, :'utils/configurable/command' do
 end
 
 describe Sv::Utils::Configurable::Command, :'utils/configurable/command' do
-  let(:subject) { described_class.new({}) }
+  let(:subject) { described_class.new(nil, {}) }
 
   # @see Sv::Utils::SUID
   context '#suid' do
@@ -26,7 +26,7 @@ end
 describe Sv::Utils::Configurable::Command, :'utils/configurable/command' do
   let(:command) { ['ls', '-A', '-l'] }
   let(:config) { { 'command' => { 'command' => command } } }
-  let(:subject) { described_class.new(config) }
+  let(:subject) { described_class.new(nil, config) }
 
   context '#config' do
     it { expect(subject.config).to eq config[subject.identifier] }

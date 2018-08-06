@@ -45,17 +45,19 @@ module Sv::Utils::DSL
   #
   # @param [Array] command
   # @param [Hash] options
-  # @return [Runner]
+  # @return [Sv::Utils::Service]
   def service(command, options = {})
     Sv::Utils::Service.new(command, config, options)
   end
 
   # Prepare a command starting ``svlogd``.
   #
-  # @param [Hash] options
-  # @return [Logger]
-  def loggerd(options = {})
-    Sv::Utils::Loggerd.new(config, options)
+  # @return [Sv::Utils::Loggerd]
+  def loggerd(*args)
+    args.last.tap do |params|
+      return Sv::Utils::Loggerd
+             .new(args.size == 1 ? nil : args.fetch(0), config, params)
+    end
   end
 
   # @see Sv::Utils::SUID#change_user
