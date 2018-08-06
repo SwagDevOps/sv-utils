@@ -7,6 +7,7 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative '../utils'
+autoload :Shellwords, 'shellwords'
 
 module Sv::Utils
   # Service (sv) runner, starts a service.
@@ -14,10 +15,14 @@ module Sv::Utils
     # @return [Array<String>]
     attr_reader :command
 
-    # @param [Array] command
+    # @param [Array|String|Object] command
     # @param [Hash|Sv::Utils::Config] config
     # @param [Hash] options
     def initialize(command, config, options = {})
+      unless command.is_a?(Array)
+        @command = Shellwords.split(command.to_s)
+      end
+
       @command = command.to_a.map(&:to_s).freeze
 
       super(config, options)
