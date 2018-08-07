@@ -13,7 +13,7 @@ end
 group :development do
   gem 'kamaze-project', '~> 1.0', '>= 1.0.3'
   gem 'listen', '~> 3.1'
-  gem 'rubocop', '~> 0.56'
+  gem 'rubocop', '~> 0.58'
 
   group :repl do
     gem 'interesting_methods', '~> 0.1'
@@ -28,7 +28,7 @@ group :development do
   end
 
   group :test do
-    gem 'rspec', '~> 3.6'
+    gem 'rspec', '~> 3.8'
     gem 'sham', '~> 2.0'
   end
 end
