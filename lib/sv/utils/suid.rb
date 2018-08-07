@@ -44,7 +44,7 @@ module Sv::Utils::SUID
   # And will be restored after block execution, unless ``permanent``.
   #
   # @param [String|Symbol|Integer] user
-  # @param [Boolean] permanent
+  # @param [Hash{Symbol => Object}] options
   # @return [Etc::Passwd]
   #
   # @note Only ``permanent`` set to ``true`` seems to be reliable,
@@ -85,7 +85,7 @@ module Sv::Utils::SUID
 
   # Load user for given username or uid.
   #
-  # Supports UNIX format "{user}:[group]"
+  # Supports UNIX format ``{user}:[group]``
   # to load user with expected ``gid``.
   # Keeps track of previous state using added ``proc_`` methods.
   #
@@ -103,7 +103,7 @@ module Sv::Utils::SUID
     end
   end
 
-  # @param [String|Symbol|Integer] user
+  # @param [String|Symbol|Integer] user_ident
   # @return [Etc::Passwd]
   def fetch_user(user_ident)
     return Etc.getpwuid(user_ident) if user_ident.is_a?(Integer)

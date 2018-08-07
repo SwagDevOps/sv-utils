@@ -41,7 +41,7 @@ class Sv::Utils::CLI::Commands::Runner < Sv::Utils::CLI::Command
 
   # Eval files from ``arguments`` with ``DSL``.
   #
-  # @param [Object] context
+  # @return [self]
   def call
     contents.each do |fp, content|
       empty_binding.tap do |b|
@@ -50,6 +50,8 @@ class Sv::Utils::CLI::Commands::Runner < Sv::Utils::CLI::Command
         b.__send__(:eval, content, fp.to_path)
       end
     end
+
+    self
   end
 
   # @return [Array<Pathname>]
