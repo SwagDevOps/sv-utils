@@ -68,7 +68,7 @@ default, it can be overriden (for example using [socklog][socklog]):
 ```ruby
 #!/usr/bin/env svrun
 
-loggerd('svlogd -t main/*', user: :log).call
+loggerd(['svlogd', '-t', 'main/*'], user: :log).call
 ```
 
 Log directory is created, under the hood, during ``loggerd`` call.
