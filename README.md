@@ -1,8 +1,10 @@
 # Sv Utils
 
+## ``svrun`` - avoid skeleton service burden
+
 According to the [``runit-scripts``][runit-scripts]
 ([tarball][runit-scripts-tarball])
-a skeleton service (using [Alpine Linux][alpine-linux]):
+a minimal skeleton service (using [Alpine Linux][alpine-linux]) looks like:
 
 ```sh
 #!/usr/bin/env sh
@@ -44,7 +46,7 @@ Using ``sv-utils``:
 ```ruby
 #!/usr/bin/env svrun
 
-service(['daemon']).call
+service('daemon').call
 ```
 
 ```ruby
@@ -53,16 +55,21 @@ service(['daemon']).call
 loggerd.call
 ```
 
-Moreover, options as ``:user`` are supported
+Moreover, options as ``:user`` and ``group`` are supported
 by ``loggerd`` and ``service`` methods, as:
 
 ```ruby
-service(['daemon'], user: :john_doe).call
+service('daemon', user: :john_doe).call
 ```
 
-``:user`` and ``:group`` options are also supported by ``loggerd`` method,
-but you SHOULD use config,
-unless you need to set different users and/or groups per service logger.
+``:command``, defined in config for ``loggerd``, can de considered as a
+default, it can be overriden (for example using [socklog][socklog]):
+
+```ruby
+#!/usr/bin/env svrun
+
+loggerd('svlogd -t main/*', user: :log).call
+```
 
 Log directory is created, under the hood, during ``loggerd`` call.
 
@@ -72,5 +79,7 @@ to ``runit`` services creation.
 [alpine-linux]: https://alpinelinux.org/
 [runit-scripts]: https://github.com/dockage/runit-scripts
 [runit-scripts-tarball]: https://api.github.com/repos/dockage/runit-scripts/tarball
+[socklog]: http://smarden.org/socklog/
+
 [dry-definition]: https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
 [runit-doc:userservices]: http://smarden.org/runit/faq.html#userservices
