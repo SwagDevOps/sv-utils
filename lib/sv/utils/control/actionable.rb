@@ -51,17 +51,15 @@ module Sv::Utils::Control::Actionable
   # @param [String|Symbol|nil] mode
   # @return [Array<String>]
   def auto_start(service_dir, auto_start, mode)
-    utils = futils(mode)
+    method = auto_start ? :rm_rf : :touch
 
-    unless auto_start
-      return [service_dir.join('down'),
-              service_dir.join('log', 'down')].tap do |paths|
-               paths.each { |fp| utils.rm_rf(fp) }
-             end
-    end
+    [service_dir.join('down'),
+     service_dir.join('log', 'down')].tap do |paths|
+      paths.each do |fp|
+        next unless fp.dirname.directory?
 
-    [service_dir.join('down'), service_dir.join('log', 'down')].tap do |paths|
-      paths.each { |fp| utils.touch(fp) if fp.dirname.directory? }
+        futils(mode).public_send(method, fp)
+      end
     end
   end
 
