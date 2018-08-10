@@ -65,7 +65,7 @@ module Sv::Utils::CLI::Commands
     end
 
     def call
-      control.call(action, service, innercall_params)
+      control.call(action, service, action_params)
       $stdout.puts(message)
     rescue StandardError => e
       raise(e) unless e.class.name =~ /^Errno::/
@@ -88,9 +88,10 @@ module Sv::Utils::CLI::Commands
     protected
 
     # @return [Hash{Symbol => Object}]
-    def innercall_params
+    def action_params
       {
         auto_start: options[:auto_start],
+        method: control.config['method'],
         futils: options[:mode] || control.params[:futils]
       }
     end
