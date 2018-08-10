@@ -64,13 +64,9 @@ module Sv::Utils::CLI::Commands
       end
     end
 
-    def call # rubocop:disable Metrics/AbcSize
-      {
-        auto_start: options[:auto_start],
-        futils: options[:mode] || control.params[:futils],
-      }.tap do |params|
-        control.call(action, service, params)
-      end
+    def call
+      control.call(action, service, innercall_params)
+      $stdout.puts(message)
     rescue StandardError => e
       raise(e) unless e.class.name =~ /^Errno::/
 
@@ -78,8 +74,28 @@ module Sv::Utils::CLI::Commands
       exit(e.class.const_get(:Errno))
     end
 
+    # @return [String]
+    def message
+      s = "#{service}: #{action}d"
+
+      return s unless action.to_sym == :enable
+
+      "#{s} %<h>s" % {
+        h: { auto_start: !!options[:auto_start] }
+      }
+    end
+
     protected
 
+    # @return [Hash{Symbol => Object}]
+    def innercall_params
+      {
+        auto_start: options[:auto_start],
+        futils: options[:mode] || control.params[:futils]
+      }
+    end
+
+    # @return [Sv::Utils::Control]
     def control(params = {})
       Sv::Utils::Control.new(config, params)
     end
