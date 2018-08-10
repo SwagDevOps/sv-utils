@@ -28,18 +28,32 @@ module Sv::Utils::Control::Actionable
     }
   end
 
+  # Method used to enable service.
+  #
+  # @param [Hash{Symbol => Object}] params
+  # @return [Symbol]
+  def method_for(params)
+    {
+      cp: :cp_r,
+      ln: :ln_sf,
+    }[params[:method].to_s.to_sym] || :ln_sf
+  end
+
   protected
 
   # @param [String|Symbol|Object] service
   # @param [Hash{Symbol => Object}] params
   # @raise Errno::EINVAL
   # @return [Array<String>]
-  def enable(service, params = {})
+  def enable(service, params = {}) # rubocop:disable Metrics/AbcSize
     service_dir = params[:paths].fetch(0).join(service.to_s)
 
     auto_start(service_dir, params[:auto_start], params[:futils]).tap do |res|
       params[:paths].fetch(1).join(service.to_s).tap do |target_dir|
-        futils(params[:futils]).ln_sf(service_dir, target_dir)
+        futils(params[:futils]).tap do |futils|
+          futils.rm_rf(target_dir)
+          futils.public_send(method_for(params), service_dir, target_dir)
+        end
 
         return res.push(target_dir)
       end
