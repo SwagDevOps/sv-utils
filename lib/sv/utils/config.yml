@@ -20,5 +20,5 @@ control:
   futils: 'verbose'
   paths:
     - '/etc/sv'
-    # SHOULD not be uncommented, and use SVDIR environment
+    # SHOULD not be uncommented, and always use SVDIR environment
     # - '/service'
