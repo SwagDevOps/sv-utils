@@ -49,14 +49,18 @@ module Sv::Utils
       end
     end
 
+    # @raise [KeyError]
     # @return [Hash{Symbol => Object}]
+    #
+    # @todo Improve paths retrieval
     def params
       {
         futils: config['futils'],
         paths: [
-          Pathname.new(config['paths'].to_a[0] || Dir.pwd),
+          Pathname.new(config['paths'].to_a.fetch(0)),
           lambda do
-            (config['paths'].to_a[1] || ENV['svdir'] || '/etc/service')
+            # prioritize SVDIR over configuration
+            (ENV['SVDIR'] || config['paths'].to_a[1] || ENV.fetch('SVDIR'))
               .tap { |dir| return Pathname.new(dir) }
           end.call
         ].freeze,
