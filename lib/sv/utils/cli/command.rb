@@ -9,8 +9,8 @@
 require_relative '../cli'
 require_relative 'empty'
 require 'sys/proc'
+require 'dry/inflector'
 autoload :OptionParser, 'optparse'
-autoload :Pathname, 'pathname'
 
 # Command Line Interface (CLI)
 #
@@ -61,10 +61,21 @@ class Sv::Utils::CLI::Command
   def version(full = false)
     Sv::Utils::VERSION.tap do |version|
       return version unless full
-      return ["#{self.progname} #{version}",
+
+      return ["#{gem_name} #{version}",
               nil,
               version.license_header].join("\n")
     end
+  end
+
+  # @return [String]
+  def gem_name
+    inflector = Dry::Inflector.new
+
+    self.class
+        .name.split('::')[0..1]
+        .map { |part| inflector.underscore(part) }
+        .join('-')
   end
 
   def call
