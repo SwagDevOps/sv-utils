@@ -35,7 +35,10 @@ module Sv::Utils::CLI::Commands
 
       def options
         super.merge(
-          ['--mode=MODE', 'Mode'] => ->(c, v) { c.options[:mode] = v },
+          ['-b', '--behavior=BEHAVIOR',
+           'Behavior (verbose|dry_run)'] => lambda do |c, v|
+                                              c.options[:behavior] = v
+                                            end,
           ['--[no-]auto-start', 'Autostart service'] => lambda do |c, v|
             c.options[:auto_start] = v
           end
@@ -92,7 +95,7 @@ module Sv::Utils::CLI::Commands
       {
         auto_start: options[:auto_start],
         method: control.config['method'],
-        futils: options[:mode] || control.params[:futils]
+        futils: options[:behavior] || control.params[:futils]
       }
     end
 
