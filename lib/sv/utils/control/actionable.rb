@@ -84,7 +84,7 @@ module Sv::Utils::Control::Actionable
     utils = futils(params[:futils])
     target_dir = params[:paths].fetch(1).join(service.to_s)
 
-    utils.rm_f(target_dir)
+    utils.rm_rf(target_dir)
   end
 
   # @return [Fileutils|Fileutils::Verbose|Fileutils::DryRun|Fileutils::NoWrite]
