@@ -4,8 +4,6 @@
 <?rb singleton_class
        .__send__(:define_method, :quote) { |input| input.to_s.inspect } ?>
 
-require 'pathname'
-
 Gem::Specification.new do |s|
   s.name        = #{quote(@name)}
   s.version     = #{quote(@version)}
@@ -23,16 +21,17 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 2.3.0"
   s.require_paths = ["lib"]
   s.bindir        = "bin"
-  s.executables   = Dir.glob("%s/*" % s.bindir)
-                       .map { |f| Pathname.new(f) }
-                       .keep_if { |f| f.file? and f.executable? }
-                       .map { |f| f.basename.to_s }
+  s.executables   = Dir.glob([s.bindir, "/*"].join)
+                       .select { |f| File.file?(f) and File.executable?(f) }
+                       .map { |f| File.basename(f) }
   s.files = [
     ".yardopts",
-    "bin/*",
-    "lib/**/*.rb",
-    "lib/**/*.yml",
-  ].map { |m| Dir.glob(m) }.flatten.sort
+    s.require_paths.map { |rp| [rp, "/**/*.rb"].join },
+    s.require_paths.map { |rp| [rp, "/**/*.yml"].join },
+  ].flatten
+   .map { |m| Dir.glob(m) }
+   .flatten
+   .push(*s.executables.map { |f| [s.bindir, f].join("/") })
 
   #{@dependencies.keep(:runtime).to_s.lstrip}
 end
