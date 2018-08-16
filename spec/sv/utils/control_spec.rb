@@ -22,6 +22,9 @@ describe Sv::Utils::Control, :'utils/control' do
   let(:subject) { described_class.new({}) }
 
   context '#params' do
+    let(:config) { { 'control' => { 'paths' => ['/etc/sv', '/service'] } } }
+    let(:subject) { described_class.new(config) }
+
     it { expect(subject.params).to be_a(Hash) }
   end
 
