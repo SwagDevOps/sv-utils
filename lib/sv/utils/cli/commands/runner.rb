@@ -7,7 +7,6 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative '../commands'
-autoload :Pathname, 'pathname'
 
 # Runner provides DSL evaluation.
 #
@@ -32,22 +31,17 @@ autoload :Pathname, 'pathname'
 class Sv::Utils::CLI::Commands::Runner < Sv::Utils::CLI::Command
   DSL = Sv::Utils::DSL
 
-  # Get contents, indexed by filepath.
-  #
-  # @return [Hash{Pathname => String}]
-  def contents
-    arguments.map { |fp| [fp, fp.read] }.to_h
-  end
+  autoload(:Pathname, 'pathname')
 
   # Eval files from ``arguments`` with ``DSL``.
   #
   # @return [self]
   def call
-    contents.each do |fp, content|
+    arguments.each do |fp|
       empty_binding.tap do |b|
         b.__send__(:eval, "self.extend(#{DSL})")
         b.local_variable_set(:__dir__, fp.dirname.to_path)
-        b.__send__(:eval, content, fp.to_path)
+        b.__send__(:eval, fp.read, fp.to_path)
       end
     end
 
@@ -56,6 +50,17 @@ class Sv::Utils::CLI::Commands::Runner < Sv::Utils::CLI::Command
 
   # @return [Array<Pathname>]
   def arguments
-    super.map { |arg| Pathname.new(arg) }
+    (options[:multiple] ? super : [super[0]].compact)
+      .map { |arg| Pathname.new(arg) }
+  end
+
+  class << self
+    def options
+      {
+        ['-m', '--[no-]multiple', 'Run on multiple inputs'] => lambda do |c, v|
+          c.__send__(:options)[:multiple] = v
+        end
+      }.tap { |opts| super.merge(opts) }
+    end
   end
 end
