@@ -76,10 +76,14 @@ Log directory is created, under the hood, during ``loggerd`` call.
 ``sv-utils`` is an attempt to bring [DRY principle][dry-definition]
 to ``runit`` services creation.
 
+## See also
+
+* [UNIX Programming by Example: Runit][sa:unix-programming-by-example-runit]
+
 [alpine-linux]: https://alpinelinux.org/
 [runit-scripts]: https://github.com/dockage/runit-scripts
 [runit-scripts-tarball]: https://api.github.com/repos/dockage/runit-scripts/tarball
 [socklog]: http://smarden.org/socklog/
-
 [dry-definition]: https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
 [runit-doc:userservices]: http://smarden.org/runit/faq.html#userservices
+[sa:unix-programming-by-example-runit]: http://tammersaleh.com/posts/unix-programming-by-example-runit/
