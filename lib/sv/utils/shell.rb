@@ -12,31 +12,39 @@ require_relative '../utils'
 module Sv::Utils::Shell
   singleton_class.include(self)
 
+  autoload(:Shellwords, 'shellwords')
   # @formatter:off
   {
     Command: 'command',
+    Result: 'result',
+    ExitStatusError: 'exceptions',
   }.each { |k, v| autoload(k, "#{__dir__}/shell/#{v}") }
   # @formatter:on
 
-  class << self
-    def sh(*params)
-      Command.new(params).tap do |command|
-        return self.system(*command)
-      end
+  (@mutex_sh = Mutex.new).tap do
+    class << self
+      protected
+
+      attr_accessor :mutex_sh
     end
+  end
 
-    protected
+  class << self
+    # @return [Result]
+    #
+    # @raise [ExitStatusError]
+    def sh(*params)
+      self.mutex_sh.synchronize do
+        # warn(Shellwords.join(command)) if verbose?
 
-    # @param [Command] command
-    #
-    # @raise [RuntimeError]
-    #
-    # @todo Raise e better error
-    # @todo Provide exit status with raised error
-    def system(*command)
-      Kernel.system(*command) || lambda do
-        raise args.inspect
-      end.call
+        Command.new(params).tap do |command|
+          system(*command).tap do |b|
+            return Result.new($CHILD_STATUS).tap do |result|
+              raise ExitStatusError.new(command, result) unless b
+            end
+          end
+        end
+      end
     end
   end
 end
