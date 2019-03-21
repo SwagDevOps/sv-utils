@@ -13,7 +13,7 @@ autoload :Shellwords, 'shellwords'
 module Sv::Utils
   # Almost a command retrieved from config.
   #
-  # @abstract# Almost a command retrieved from config.
+  # @abstract Almost a command retrieved from config.
   #
   # @abstract
   class Configurable::Command < Configurable
