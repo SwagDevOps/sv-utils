@@ -15,6 +15,7 @@ module Sv
     autoload :Configurable, "#{__dir__}/utils/configurable"
     autoload :Util, "#{__dir__}/utils/util"
     autoload :SUID, "#{__dir__}/utils/suid"
+    autoload :Shell, "#{__dir__}/utils/shell"
     autoload :DSL, "#{__dir__}/utils/dsl"
     autoload :Service, "#{__dir__}/utils/service"
     autoload :Loggerd, "#{__dir__}/utils/loggerd"
