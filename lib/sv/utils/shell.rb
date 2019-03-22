@@ -9,10 +9,9 @@
 require_relative '../utils'
 
 # Provides shell methods
-module Sv::Utils::Shell
-  singleton_class.include(self)
-
+class Sv::Utils::Shell
   autoload(:Shellwords, 'shellwords')
+
   # @formatter:off
   {
     Command: 'command',
@@ -29,19 +28,17 @@ module Sv::Utils::Shell
     end
   end
 
-  class << self
-    # @return [Result]
-    #
-    # @raise [ExitStatusError]
-    def sh(*params)
-      self.mutex_sh.synchronize do
-        # warn(Shellwords.join(command)) if verbose?
+  # @return [Result]
+  #
+  # @raise [ExitStatusError]
+  def sh(*params)
+    self.class.__send__(:mutex_sh).synchronize do
+      # warn(Shellwords.join(command)) if verbose?
 
-        Command.new(params).tap do |command|
-          system(*command).tap do |b|
-            return Result.new($CHILD_STATUS).tap do |result|
-              raise ExitStatusError.new(command, result) unless b
-            end
+      Command.new(params).tap do |command|
+        system(*command).tap do |b|
+          return Result.new($CHILD_STATUS).tap do |result|
+            raise ExitStatusError.new(command, result) unless b
           end
         end
       end
