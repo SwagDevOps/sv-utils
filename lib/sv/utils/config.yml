@@ -23,3 +23,5 @@ control:
     - '/etc/sv'
     # SHOULD not be uncommented, and always use SVDIR environment
     # - '/service'
+shell:
+  verbose: true
