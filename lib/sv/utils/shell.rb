@@ -9,7 +9,7 @@
 require_relative '../utils'
 
 # Provides shell methods
-class Sv::Utils::Shell
+class Sv::Utils::Shell < Sv::Utils::Configurable
   autoload(:Shellwords, 'shellwords')
 
   # @formatter:off
@@ -43,5 +43,11 @@ class Sv::Utils::Shell
         end
       end
     end
+  end
+
+  def warn(message)
+    # rubocop:disable Style/StderrPuts
+    $stderr.puts(message)
+    # rubocop:enable Style/StderrPuts
   end
 end
