@@ -8,9 +8,20 @@
 
 require_relative '../shell'
 
-# Provides shell
+# Command respresentation
+#
+# A command is almost an ``Array`` of strings (arguments are compacted and
+# casted to string explicitely). Command has a string representation.
+#
+# @see [Sv::Utils::Shell#sh()]
 class Sv::Utils::Shell::Command < Array
+  autoload(:Shellwords, 'shellwords')
+
   def initialize(params)
     params.compact.map(&:to_s).each { |param| self.push(param) }
+  end
+
+  def to_s
+    Shellwords.join(self)
   end
 end
