@@ -33,9 +33,9 @@ class Sv::Utils::Shell < Sv::Utils::Configurable
   # @raise [ExitStatusError]
   def sh(*params)
     self.class.__send__(:mutex_sh).synchronize do
-      # warn(Shellwords.join(command)) if verbose?
-
       Command.new(params).tap do |command|
+        warn(command.to_s) if verbose?
+
         system(*command).tap do |b|
           return Result.new($CHILD_STATUS).tap do |result|
             raise ExitStatusError.new(command, result) unless b
@@ -43,6 +43,10 @@ class Sv::Utils::Shell < Sv::Utils::Configurable
         end
       end
     end
+  end
+
+  def verbose?
+    options.key?('verbose') ? options['verbose'] : config['verbose']
   end
 
   def warn(message)
