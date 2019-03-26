@@ -29,7 +29,7 @@ describe Sv::Utils::Config, :'utils/config' do
   end
 
   context '#keys.sort' do
-    it { expect(subject.keys).to eq(%w[loggerd service control]) }
+    it { expect(subject.keys).to eq(%w[loggerd service control shell]) }
   end
 end
 
@@ -101,5 +101,9 @@ describe Sv::Utils::Config, :'utils/config' do
     let(:paths) { ['/etc/service', '/var/run/sv'] }
 
     it { expect(subject['control']['paths']).to eq(paths) }
+  end
+
+  context '#["shell"]["verbose"]' do
+    it { expect(subject['shell']['verbose']).to eq(true) }
   end
 end
