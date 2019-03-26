@@ -13,13 +13,13 @@ end
 group :development do
   gem 'kamaze-project', '~> 1.0', '>= 1.0.3'
   gem 'listen', '~> 3.1'
-  gem 'rubocop', '~> 0.58'
+  gem 'rubocop', '~> 0.66'
   # repl ---------------------------------
   gem 'interesting_methods', '~> 0.1'
-  gem 'pry', '~> 0.11'
+  gem 'pry', '~> 0.12'
   gem 'pry-coolline', '~> 0.2'
   # doc ----------------------------------
-  gem 'github-markup', '~> 2.0'
+  gem 'github-markup', '~> 3.0'
   gem 'redcarpet', '~> 3.4'
   gem 'yard', '~> 0.9'
 end
