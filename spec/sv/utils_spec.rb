@@ -11,4 +11,5 @@ describe Sv::Utils, :utils do
   it { expect(described_class).to be_const_defined(:Service) }
   it { expect(described_class).to be_const_defined(:Loggerd) }
   it { expect(described_class).to be_const_defined(:Concern) }
+  it { expect(described_class).to be_const_defined(:Shell) }
 end
