@@ -41,6 +41,10 @@ module Sv::Utils::DSL
     @config
   end
 
+  def sh(command, options = {})
+    return Sv::Utils::Shell.new(config, options).sh(*command)
+  end
+
   # Prepare a command starting service.
   #
   # @param [Array] command
