@@ -10,6 +10,8 @@ describe Sv::Utils::DSL, :'utils/dsl' do
   it { expect(subject).to respond_to(:service).with(2).arguments }
   it { expect(subject).to respond_to(:loggerd).with(0).arguments }
   it { expect(subject).to respond_to(:loggerd).with(1).arguments }
+  it { expect(subject).to respond_to(:sh).with(1).arguments }
+  it { expect(subject).to respond_to(:sh).with(2).arguments }
   it { expect(subject).to respond_to(:change_user).with(1).arguments }
   it { expect(subject).to respond_to(:change_user).with(2).arguments }
 end
