@@ -16,6 +16,7 @@ class Sv::Utils::Shell < Sv::Utils::Configurable
   {
     Command: 'command',
     Result: 'result',
+    Error: 'exceptions',
     ExitStatusError: 'exceptions',
   }.each { |k, v| autoload(k, "#{__dir__}/shell/#{v}") }
   # @formatter:on
