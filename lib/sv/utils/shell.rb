@@ -50,6 +50,8 @@ class Sv::Utils::Shell < Sv::Utils::Configurable
     options.key?('verbose') ? options['verbose'] : config['verbose']
   end
 
+  protected
+
   def warn(message)
     # rubocop:disable Style/StderrPuts
     $stderr.puts(message)
