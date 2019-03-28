@@ -14,3 +14,15 @@ describe Sv::Utils::Shell, :'utils/shell' do
     expect(described_class).to respond_to(:new).with(2).arguments
   end
 end
+
+# intsance methods
+describe Sv::Utils::Shell, :'utils/shell' do
+  let(:subject) { described_class.new({}, {}) }
+
+  it do
+    expect(subject).to respond_to(:sh).with(1).arguments
+    expect(subject).to respond_to(:sh).with(2).arguments
+
+    expect(subject).to respond_to(:verbose?).with(0).arguments
+  end
+end
