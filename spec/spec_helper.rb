@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Dir.glob('../lib/*.rb').map { |req| require 'req' }
+Dir.glob('../lib/*.rb').map(&:require)
 
 if Gem::Specification.find_all_by_name('sys-proc').any?
   require 'sys/proc'
@@ -8,7 +8,9 @@ if Gem::Specification.find_all_by_name('sys-proc').any?
   Sys::Proc.progname = 'rspec'
 end
 
+# @formatter:off
 [
+  :env,
   :constants,
   :configure,
 ].each do |req|
@@ -17,6 +19,7 @@ end
     req: req.to_s,
   }
 end
+# @formatter:on
 
 require 'sv/utils'
 
