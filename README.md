@@ -62,8 +62,8 @@ by ``loggerd`` and ``service`` methods, as:
 service('daemon', user: :john_doe).call
 ```
 
-``:command``, defined in config for ``loggerd``, can de considered as a
-default, it can be overriden (for example using [socklog][socklog]):
+``:command``, defined in config for ``loggerd``, is used by default,
+but it can be overriden (for example using [socklog][socklog]):
 
 ```ruby
 #!/usr/bin/env svrun
