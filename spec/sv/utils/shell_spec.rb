@@ -30,15 +30,17 @@ end
 # testing output
 describe Sv::Utils::Shell, :'utils/shell' do
   let(:subject) { described_class.new(config) }
-  let(:command) { ['true'] }
+  let(:command) { %w[bundle exec true] }
 
   context '#sh' do
     let(:config) { { 'shell' => { 'verbose' => true } } }
 
     specify do
       silence_stream($stderr) do
-        expect { subject.sh(*command) }.to output(/true$/).to_stderr
-        expect { subject.sh(*command) }.to_not output.to_stdout
+        -> { subject.sh(*command) }.tap do |sh|
+          expect { sh.call }.to_not output.to_stdout
+          expect { sh.call }.to output(/^bundle exec true$/).to_stderr
+        end
       end
     end
   end
@@ -48,8 +50,10 @@ describe Sv::Utils::Shell, :'utils/shell' do
 
     specify do
       silence_stream($stderr) do
-        expect { subject.sh(*command) }.to_not output.to_stderr
-        expect { subject.sh(*command) }.to_not output.to_stdout
+        -> { subject.sh(*command) }.tap do |sh|
+          expect { sh.call }.to_not output.to_stdout
+          expect { sh.call }.to_not output.to_stderr
+        end
       end
     end
   end
