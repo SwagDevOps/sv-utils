@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'concurrent/hash'
 require_relative 'factory_struct'
 
 # Local (helper) methods
@@ -17,9 +18,9 @@ module Local
   #
   # @see https://apidock.com/rails/Kernel/silence_stream
   def silence_stream(stream) # rubocop:disable Metrics/MethodLength
-    @silence_stream_mutex ||= Mutex.new
+    @silence_stream_mutexes ||= Concurrent::Hash.new
 
-    @silence_stream_mutex.synchronize do
+    (@silence_stream_mutexes[stream.object_id] ||= Mutex.new).synchronize do
       begin
         old_stream = stream.dup
         (RbConfig::CONFIG['host_os'] =~ /mswin|mingw/ ? 'NUL:' : '/dev/null')
