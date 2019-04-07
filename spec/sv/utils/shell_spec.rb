@@ -26,3 +26,31 @@ describe Sv::Utils::Shell, :'utils/shell' do
     expect(subject).to respond_to(:verbose?).with(0).arguments
   end
 end
+
+# testing output
+describe Sv::Utils::Shell, :'utils/shell' do
+  let(:subject) { described_class.new(config) }
+  let(:command) { ['true'] }
+
+  context '#sh' do
+    let(:config) { { 'shell' => { 'verbose' => true } } }
+
+    specify do
+      silence_stream($stderr) do
+        expect { subject.sh(*command) }.to output(/true$/).to_stderr
+        expect { subject.sh(*command) }.to_not output.to_stdout
+      end
+    end
+  end
+
+  context '#sh' do
+    let(:config) { { 'shell' => { 'verbose' => false } } }
+
+    specify do
+      silence_stream($stderr) do
+        expect { subject.sh(*command) }.to_not output.to_stderr
+        expect { subject.sh(*command) }.to_not output.to_stdout
+      end
+    end
+  end
+end
