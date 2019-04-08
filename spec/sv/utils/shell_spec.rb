@@ -58,3 +58,19 @@ describe Sv::Utils::Shell, :'utils/shell' do
     end
   end
 end
+
+# result
+describe Sv::Utils::Shell, :'utils/shell' do
+  let(:subject) { described_class.new(config) }
+  let(:command) { %w[bundle exec true] }
+
+  context '#sh' do
+    let(:config) { { 'shell' => { 'verbose' => true } } }
+
+    it do
+      silence_stream($stderr) do
+        expect(subject.sh(*command)).to be_a(Sv::Utils::Shell::Result)
+      end
+    end
+  end
+end
