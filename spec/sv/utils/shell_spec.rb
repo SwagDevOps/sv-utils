@@ -74,3 +74,24 @@ describe Sv::Utils::Shell, :'utils/shell' do
     end
   end
 end
+
+# error
+describe Sv::Utils::Shell, :'utils/shell' do
+  let(:config) { { 'shell' => { 'verbose' => false } } }
+  let(:subject) { described_class.new(config) }
+
+  context '#sh' do # testing exceptions
+    let(:command) { %w[bundle exec false] } # exit 1
+
+    specify do
+      silence_stream($stderr) do
+        -> { subject.sh(*command) }.tap do |sh|
+          # rubocop:disable Metrics/LineLength
+          expect { sh.call }.to raise_error(Sv::Utils::Shell::ExitStatusError)
+          expect { sh.call }.to raise_error('"bundle exec false" exited with status: 1')
+          # rubocop:enable Metrics/LineLength
+        end
+      end
+    end
+  end
+end
