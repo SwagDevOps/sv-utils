@@ -9,22 +9,18 @@ end
 
 # class methods
 describe Sv::Utils::Shell, :'utils/shell' do
-  it do
-    expect(described_class).to respond_to(:new).with(1).arguments
-    expect(described_class).to respond_to(:new).with(2).arguments
-  end
+  it { expect(described_class).to respond_to(:new).with(1).arguments }
+  it { expect(described_class).to respond_to(:new).with(2).arguments }
 end
 
-# intsance methods
+# inheritance + intsance methods
 describe Sv::Utils::Shell, :'utils/shell' do
   let(:subject) { described_class.new({}, {}) }
 
-  it do
-    expect(subject).to respond_to(:sh).with(1).arguments
-    expect(subject).to respond_to(:sh).with(2).arguments
-
-    expect(subject).to respond_to(:verbose?).with(0).arguments
-  end
+  it { expect(subject).to be_a(Sv::Utils::Configurable) }
+  it { expect(subject).to respond_to(:sh).with(1).arguments }
+  it { expect(subject).to respond_to(:sh).with(2).arguments }
+  it { expect(subject).to respond_to(:verbose?).with(0).arguments }
 end
 
 # testing output
