@@ -5,7 +5,7 @@
 source 'https://rubygems.org'
 
 group :default do
-  gem 'dry-inflector',  '~> 0.1'
+  gem 'dry-inflector',  '~> 0.2'
   gem 'kamaze-version', '~> 1.0'
   gem 'sys-proc', '~> 1.1', '>= 1.1.2'
 end
