@@ -16,7 +16,7 @@ group :development do
   gem 'rubocop', '~> 0.66'
   # repl ---------------------------------
   gem 'interesting_methods', '~> 0.1'
-  gem 'pry', '~> 0.12'
+  gem 'pry', '~> 0.13'
   gem 'pry-coolline', '~> 0.2'
   # doc ----------------------------------
   gem 'github-markup', '~> 3.0'
