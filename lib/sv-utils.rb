@@ -7,20 +7,3 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 $LOAD_PATH.unshift(__dir__)
-
-self.singleton_class.__send__(:define_method, :locked?) do
-  Dir.chdir("#{__dir__}/..") do
-    [['gems.rb', 'gems.locked'], ['Gemfile', 'Gemfile.lock']]
-      .map { |m| 2 == Dir.glob(m).size }
-      .include?(true)
-  end
-end
-
-if locked?
-  require 'rubygems'
-  require 'bundler/setup'
-
-  if Gem::Specification.find_all_by_name('kamaze-project').any?
-    require 'kamaze/project/core_ext/pp'
-  end
-end
