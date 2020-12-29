@@ -23,10 +23,12 @@ group :development do
   gem 'rake', '~> 13.0'
   gem 'rubocop', '~> 0.66'
   gem 'rugged', '~> 1.0'
-  # repl ---------------------------------
+  # repl ------------------------------------------------------------
   gem 'interesting_methods', '~> 0.1'
   gem 'pry', '~> 0.12'
-  # doc ----------------------------------
+end
+
+group :doc do
   gem 'github-markup', '~> 3.0'
   gem 'redcarpet', '~> 3.4'
   gem 'yard', '~> 0.9'
