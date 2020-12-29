@@ -10,18 +10,20 @@
 
 module Sv
   module Utils
-    autoload :VERSION, "#{__dir__}/utils/version"
-    autoload :Config, "#{__dir__}/utils/config"
-    autoload :Configurable, "#{__dir__}/utils/configurable"
-    autoload :Util, "#{__dir__}/utils/util"
-    autoload :SUID, "#{__dir__}/utils/suid"
-    autoload :Shell, "#{__dir__}/utils/shell"
-    autoload :DSL, "#{__dir__}/utils/dsl"
-    autoload :Service, "#{__dir__}/utils/service"
-    autoload :Loggerd, "#{__dir__}/utils/loggerd"
-    autoload :Control, "#{__dir__}/utils/control"
-    autoload :Concern, "#{__dir__}/utils/concern"
-    autoload :Empty, "#{__dir__}/utils/empty"
+    {
+      VERSION: 'version',
+      Config: 'config',
+      Configurable: 'configurable',
+      Util: 'util',
+      SUID: 'suid',
+      Shell: 'shell',
+      DSL: 'dsl',
+      Service: 'service',
+      Loggerd: 'loggerd',
+      Control: 'control',
+      Concern: 'concern',
+      Empty: 'empty'
+    }.each { |k, v| autoload(k, "#{__dir__}/utils/#{v}") }
   end
 end
 
