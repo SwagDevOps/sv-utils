@@ -4,3 +4,5 @@ inherit_gem:
     - .rubocop.yml
 AllCops:
   NewCops: disable
+Naming/FileName:
+  Exclude: [ lib/sv-utils.rb ]
