@@ -12,7 +12,7 @@ end
 
 group :development do
   gem 'kamaze-project', '~> 1.0', '>= 1.0.3'
-  gem 'listen', '~> 3.1'
+  gem 'listen', '~> 3.4'
   gem 'rubocop', '~> 0.66'
   # repl ---------------------------------
   gem 'interesting_methods', '~> 0.1'
