@@ -35,7 +35,7 @@ module Sv::Utils
     # @return [Boolean]
     def bundled?
       [%w[gems.rb gems.locked], %w[Gemfile Gemfile.lock]]
-        .map { |m| Dir.glob("#{__dir__}/../#{m}").size >= 2 }
+        .map { |m| m.map { |fname| bundle_base.join(fname).file? }.keep_if { |v| v == true }.size >= 2 }
         .include?(true)
     end
 
@@ -54,11 +54,16 @@ module Sv::Utils
       standalone?.tap { |b| require standalone_setupfile if b }
     end
 
+    # @return [Pathname]
+    def bundle_base
+      Pathname.new(__dir__).join('..', '..')
+    end
+
     # @api private
     #
     # @return [Pathname]
     def standalone_setupfile
-      Pathname.new("#{__dir__}/../bundle/bundler/setup.rb")
+      bundle_base.join('bundle', 'bundler', 'setup.rb')
     end
   end
 
