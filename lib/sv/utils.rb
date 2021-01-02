@@ -20,6 +20,7 @@ module Sv
       DSL: 'dsl',
       Service: 'service',
       Loggerd: 'loggerd',
+      CLI: 'cli',
       Control: 'control',
       Concern: 'concern',
       Empty: 'empty'
