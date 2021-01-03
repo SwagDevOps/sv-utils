@@ -11,8 +11,10 @@ require 'dry/inflector'
 
 # Command Line Interface (CLI)
 module Sv::Utils::CLI
-  autoload :Command, "#{__dir__}/cli/command"
-  autoload :Commands, "#{__dir__}/cli/commands"
+  {
+    Command: 'command',
+    Commands: 'commands',
+  }.each { |k, v| autoload(k, "#{__dir__}/cli/#{v}") }
 
   class << self
     # Propagate call to given name command.
@@ -25,13 +27,23 @@ module Sv::Utils::CLI
 
     # Fetch command by given mane.
     #
+    # @raise [NameError]
+    #
     # @param [String|Symbol] name
     # @return [Sv::Utils::CLI::Command]
-    # @raise [NameError]
     def fetch(name)
-      name = Dry::Inflector.new.classify(name)
+      inflector.classify(name).yield_self do |klass_name|
+        Sv::Utils::CLI::Commands.const_get(klass_name)
+      end
+    end
 
-      Sv::Utils::CLI::Commands.const_get(name)
+    protected
+
+    # @api private
+    #
+    # @return [Dry::Inflkector]
+    def inflector
+      Dry::Inflector.new
     end
   end
 end
