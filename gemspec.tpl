@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 # vim: ai ts=2 sts=2 et sw=2 ft=ruby
 # rubocop:disable all
-<?rb singleton_class
-       .__send__(:define_method, :quote) { |input| input.to_s.inspect } ?>
+<?rb
+singleton_class.__send__(:define_method, :quote) do |input|
+  input.to_s.inspect
+end
+?>
 
 Gem::Specification.new do |s|
   s.name        = #{quote(@name)}
@@ -18,7 +21,8 @@ Gem::Specification.new do |s|
 
   # MUST follow the higher required_ruby_version
   # requires version >= 2.3.0 due to safe navigation operator &
-  s.required_ruby_version = ">= 2.3.0"
+  # requires version >= 2.5.0 due to yield_self
+  s.required_ruby_version = ">= 2.5.0"
   s.require_paths = ["lib"]
   s.bindir        = "bin"
   s.executables   = Dir.glob([s.bindir, "/*"].join)
