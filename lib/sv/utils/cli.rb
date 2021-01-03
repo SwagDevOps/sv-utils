@@ -14,6 +14,7 @@ module Sv::Utils::CLI
   {
     Command: 'command',
     Commands: 'commands',
+    Empty: 'empty',
   }.each { |k, v| autoload(k, "#{__dir__}/cli/#{v}") }
 
   class << self

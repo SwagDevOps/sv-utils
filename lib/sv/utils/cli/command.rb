@@ -7,7 +7,7 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative '../cli'
-require_relative 'empty'
+
 require 'sys/proc'
 require 'dry/inflector'
 autoload :OptionParser, 'optparse'
@@ -57,14 +57,16 @@ class Sv::Utils::CLI::Command
 
   # Get version.
   #
-  # @return [Sv::Utils::VERSION]
+  # @return [Sv::Utils::VERSION|String]
   def version(full = false)
     Sv::Utils::VERSION.tap do |version|
       return version unless full
 
-      return ["#{gem_name} #{version}",
-              nil,
-              version.license_header].join("\n")
+      return [
+        "#{gem_name} #{version}",
+        nil,
+        version.license_header
+      ].join("\n")
     end
   end
 
@@ -72,10 +74,7 @@ class Sv::Utils::CLI::Command
   def gem_name
     inflector = Dry::Inflector.new
 
-    self.class
-        .name.split('::')[0..1]
-        .map { |part| inflector.underscore(part) }
-        .join('-')
+    self.class.name.split('::')[0..1].map { |part| inflector.underscore(part) }.join('-')
   end
 
   def call
@@ -89,6 +88,7 @@ class Sv::Utils::CLI::Command
 
   # Inheritnce purpose.
   def setup
+    # noinspection RubyUnnecessaryReturnStatement
     return
   end
 
@@ -135,15 +135,15 @@ class Sv::Utils::CLI::Command
     def options # rubocop:disable Metrics/MethodLength
       {
         ['--version', 'Display the version and exit'] =>
-        lambda do |c, _|
-          $stdout.puts(c.__send__(:version, true))
-          exit(0)
-        end,
+          lambda do |c, _|
+            $stdout.puts(c.__send__(:version, true))
+            exit(0)
+          end,
         ['--help', 'Display this screen and exit'] =>
-        lambda do |c, _|
-          c.__send__(:usage)
-          exit(0)
-        end,
+          lambda do |c, _|
+            c.__send__(:usage)
+            exit(0)
+          end,
       }
     end
   end
