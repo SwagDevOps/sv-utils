@@ -6,26 +6,32 @@
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
+require_relative '../sv/utils'
+
 # rubocop:disable Style/Documentation
 
-module Sv
-  module Utils
-    {
-      VERSION: 'version',
-      Config: 'config',
-      Configurable: 'configurable',
-      Util: 'util',
-      SUID: 'suid',
-      Shell: 'shell',
-      DSL: 'dsl',
-      Service: 'service',
-      Loggerd: 'loggerd',
-      CLI: 'cli',
-      Control: 'control',
-      Concern: 'concern',
-      Empty: 'empty'
-    }.each { |k, v| autoload(k, "#{__dir__}/utils/#{v}") }
+# noinspection RubyClassModuleNamingConvention
+unless Object.const_defined?(:Sv)
+  module Sv
   end
+end
+
+module Sv::Utils
+  {
+    VERSION: 'version',
+    Config: 'config',
+    Configurable: 'configurable',
+    Util: 'util',
+    SUID: 'suid',
+    Shell: 'shell',
+    DSL: 'dsl',
+    Service: 'service',
+    Loggerd: 'loggerd',
+    CLI: 'cli',
+    Control: 'control',
+    Concern: 'concern',
+    Empty: 'empty'
+  }.each { |k, v| autoload(k, "#{__dir__}/utils/#{v}") }
 end
 
 module Sv::Utils
