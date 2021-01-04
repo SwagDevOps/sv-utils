@@ -9,17 +9,15 @@
 require_relative '../utils'
 autoload :Shellwords, 'shellwords'
 
-module Sv::Utils
-  # Service (sv) runner, starts a service.
-  class Service < Configurable::Command
-    def to_a
-      super + command.map do |v|
-        v.to_s % params.reject { |k| k == :command }
-      end
+# Service (sv) runner, starts a service.
+class Sv::Utils::Service < Sv::Utils::Configurable::Command
+  def to_a
+    super + command.map do |v|
+      v.to_s % params.reject { |k| k == :command }
     end
+  end
 
-    def to_s
-      "#{super} 2>&1"
-    end
+  def to_s
+    "#{super} 2>&1"
   end
 end
