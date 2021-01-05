@@ -19,8 +19,10 @@ class Sv::Utils::Configurable::Command < Sv::Utils::Configurable
   # @param [Array<String>, String, nil] command
   # @param [Sv::Utils::Config, Hash] config
   # @param [Hash] options
+  #
+  # @see #command=
   def initialize(command, config, options = {})
-    self.command = command&.yield_self { |v| (v.is_a?(Array) ? v.map(&:freeze) : v).freeze }
+    self.command = command
 
     super(config, options)
   end
@@ -66,9 +68,11 @@ class Sv::Utils::Configurable::Command < Sv::Utils::Configurable
 
   # Denote call will run in a privileged mode.
   #
+  # @see #call
+  #
   # @return [Boolean]
   def privileged?
-    true == config['privileged']
+    (config.key?('privileged') ? !!config['privileged'] : uid.zero?).yield_self { |v| true == v }
   end
 
   # Denote command will ``chdir`` to ``exec``.
@@ -93,11 +97,20 @@ class Sv::Utils::Configurable::Command < Sv::Utils::Configurable
 
   # Set command.
   #
-  # @param [Array|String|Object] command
+  # @param [Array, String, Object] command
   def command=(command)
-    command = Shellwords.split(command.to_s) unless command.is_a?(Array)
+    (command.is_a?(Array) ? command : Shellwords.split(command.to_s)).yield_self do |parts|
+      @command = parts.to_a.map(&:to_s).freeze
+    end
+  end
 
-    @command = command.to_a.map(&:to_s).freeze
+  # Returns the user ID of this process.
+  #
+  # @return [Integer]
+  #
+  # @see https://ruby-doc.org/core-2.5.0/Process/UID.html#method-c-rid
+  def uid
+    Process.uid
   end
 
   # @return [Module<Sv::Utils::SUID>]
