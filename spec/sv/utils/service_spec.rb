@@ -21,14 +21,18 @@ describe Sv::Utils::Service, :'utils/service' do
   let(:config) { { 'service' => { 'command' => command } } }
   let(:service) { ['sleep', 'infinity'] } # service command
   let(:subject) { described_class.new(service, config) }
+  let(:expected) do
+    {
+      chdir: Dir.pwd,
+      command: [],
+      group: 'root',
+      user: :root
+    }
+  end
 
   context '#params.sort.to_h' do
     it 'command (from config) SHOULD be casted to array' do
-      expect(subject.params.sort.to_h).to eq(
-        command: [],
-        group: 'root',
-        user: :root
-      )
+      expect(subject.params.sort.to_h).to eq(expected)
     end
   end
 
@@ -41,11 +45,19 @@ describe Sv::Utils::Service, :'utils/service' do
   end
 end
 
-describe Sv::Utils::Service, :'utils/service' do
+describe Sv::Utils::Service, :'utils/service' do # rubocop:disable Metrics/BlockLength
   let(:command) { ['/usr/bin/env', '--'] }
   let(:config) { { 'service' => { 'command' => command } } }
   let(:service) { ['sleep', 'infinity'] } # service command
   let(:subject) { described_class.new(service, config) }
+  let(:expected) do
+    {
+      chdir: Dir.pwd,
+      command: command,
+      group: 'root',
+      user: :root
+    }
+  end
 
   context '#config.sort.to_h' do
     it { expect(subject.config).to eq(config[subject.identifier]) }
@@ -53,11 +65,7 @@ describe Sv::Utils::Service, :'utils/service' do
 
   context '#params.sort.to_h' do
     it do
-      expect(subject.params.sort.to_h).to eq(
-        command: command,
-        group: 'root',
-        user: :root
-      )
+      expect(subject.params.sort.to_h).to eq(expected)
     end
   end
 
