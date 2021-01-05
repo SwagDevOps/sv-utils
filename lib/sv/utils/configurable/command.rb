@@ -16,14 +16,11 @@ autoload :Shellwords, 'shellwords'
 #
 # @abstract
 class Sv::Utils::Configurable::Command < Sv::Utils::Configurable
-  # @return [Array<String>]
-  attr_reader :command
-
-  # @param [Array|String|Object|nil] command
-  # @param [Hash|Sv::Utils::Config] config
+  # @param [Array<String>, String, nil] command
+  # @param [Sv::Utils::Config, Hash] config
   # @param [Hash] options
   def initialize(command, config, options = {})
-    self.command = command&.map(&:freeze).freeze
+    self.command = command&.yield_self { |v| (v.is_a?(Array) ? v.map(&:freeze) : v).freeze }
 
     super(config, options)
   end
@@ -90,6 +87,9 @@ class Sv::Utils::Configurable::Command < Sv::Utils::Configurable
   end
 
   protected
+
+  # @return [Array<String>]
+  attr_reader :command
 
   # Set command.
   #
