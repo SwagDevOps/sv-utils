@@ -11,6 +11,7 @@ git_source(:github) { |name| "https://github.com/#{name}.git" }
 group :default do
   gem 'dry-inflector',  '~> 0.1'
   gem 'kamaze-version', '~> 1.0'
+  gem 'stibium-bundled', '~> 0.0.1'
   gem 'sys-proc', '~> 1.1', '>= 1.1.2'
 end
 
