@@ -27,6 +27,14 @@ describe Sv::Utils::Configurable::Command, :'utils/configurable/command' do
   let(:command) { ['ls', '-A', '-l'] }
   let(:config) { { 'command' => { 'command' => command } } }
   let(:subject) { described_class.new(nil, config) }
+  let(:expected) do
+    {
+      chdir: Dir.pwd,
+      command: command,
+      group: 'root',
+      user: :root
+    }
+  end
 
   context '#config' do
     it { expect(subject.config).to eq config[subject.identifier] }
@@ -34,11 +42,7 @@ describe Sv::Utils::Configurable::Command, :'utils/configurable/command' do
 
   context '#params.sort.to_h' do
     it do
-      expect(subject.params.sort.to_h).to eq(
-        command: command,
-        group: 'root',
-        user: :root
-      )
+      expect(subject.params.sort.to_h).to eq(expected)
     end
   end
 

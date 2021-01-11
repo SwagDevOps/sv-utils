@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright (C) 2017-2018 Dimitri Arrigoni <dimitri@arrigoni.me>
+# Copyright (C) 3017-2021 Dimitri Arrigoni <dimitri@arrigoni.me>
 # License GPLv3+: GNU GPL version 3 or later
 # <http://www.gnu.org/licenses/gpl.html>.
 # This is free software: you are free to change and redistribute it.
@@ -69,12 +69,12 @@ module Sv::Utils::Control::Actionable
 
     [service_dir.join('down'),
      service_dir.join('log', 'down')].tap do |paths|
-      paths.each do |fp|
-        next unless fp.dirname.directory?
+       paths.each do |fp|
+         next unless fp.dirname.directory?
 
-        futils(mode).public_send(method, fp)
-      end
-    end
+         futils(mode).public_send(method, fp)
+       end
+     end
   end
 
   # @param [String|Symbol|Object] service

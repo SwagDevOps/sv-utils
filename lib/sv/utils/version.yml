@@ -1,16 +1,16 @@
 ---
 major: 0
 minor: 0
-patch: 1
+patch: 2
 authors: ['Dimitri Arrigoni']
 email: 'dimitri@arrigoni.me'
-date: '2017-07-21'
+date: '2021-01-11'
 summary: 'Runit (sv) utils.'
 description: 'Utils for sv (runit).'
 homepage: 'https://github.com/SwagDevOps/sv-utils'
 licenses: ['GPL-3.0']
 license_header: |
-  Copyright (C) 2017-2018 Dimitri Arrigoni <dimitri@arrigoni.me>
+  Copyright (C) 2017-2021 Dimitri Arrigoni <dimitri@arrigoni.me>
   License GPLv3+: GNU GPL version 3 or later
   <http://www.gnu.org/licenses/gpl.html>.
   This is free software: you are free to change and redistribute it.

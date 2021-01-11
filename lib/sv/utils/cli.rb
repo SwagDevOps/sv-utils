@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright (C) 2017-2018 Dimitri Arrigoni <dimitri@arrigoni.me>
+# Copyright (C) 3017-2021 Dimitri Arrigoni <dimitri@arrigoni.me>
 # License GPLv3+: GNU GPL version 3 or later
 # <http://www.gnu.org/licenses/gpl.html>.
 # This is free software: you are free to change and redistribute it.
@@ -11,8 +11,11 @@ require 'dry/inflector'
 
 # Command Line Interface (CLI)
 module Sv::Utils::CLI
-  autoload :Command, "#{__dir__}/cli/command"
-  autoload :Commands, "#{__dir__}/cli/commands"
+  {
+    Command: 'command',
+    Commands: 'commands',
+    Empty: 'empty',
+  }.each { |k, v| autoload(k, "#{__dir__}/cli/#{v}") }
 
   class << self
     # Propagate call to given name command.
@@ -25,13 +28,23 @@ module Sv::Utils::CLI
 
     # Fetch command by given mane.
     #
+    # @raise [NameError]
+    #
     # @param [String|Symbol] name
     # @return [Sv::Utils::CLI::Command]
-    # @raise [NameError]
     def fetch(name)
-      name = Dry::Inflector.new.classify(name)
+      inflector.classify(name).yield_self do |klass_name|
+        Sv::Utils::CLI::Commands.const_get(klass_name)
+      end
+    end
 
-      Sv::Utils::CLI::Commands.const_get(name)
+    protected
+
+    # @api private
+    #
+    # @return [Dry::Inflkector]
+    def inflector
+      Dry::Inflector.new
     end
   end
 end

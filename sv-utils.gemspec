@@ -4,8 +4,8 @@
 
 Gem::Specification.new do |s|
   s.name        = "sv-utils"
-  s.version     = "0.0.1"
-  s.date        = "2017-07-21"
+  s.version     = "0.0.2"
+  s.date        = "2021-01-11"
   s.summary     = "Runit (sv) utils."
   s.description = "Utils for sv (runit)."
 
@@ -16,7 +16,8 @@ Gem::Specification.new do |s|
 
   # MUST follow the higher required_ruby_version
   # requires version >= 2.3.0 due to safe navigation operator &
-  s.required_ruby_version = ">= 2.3.0"
+  # requires version >= 2.5.0 due to yield_self
+  s.required_ruby_version = ">= 2.5.0"
   s.require_paths = ["lib"]
   s.bindir        = "bin"
   s.executables   = Dir.glob([s.bindir, "/*"].join)
@@ -33,7 +34,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency("dry-inflector", ["~> 0.1"])
   s.add_runtime_dependency("kamaze-version", ["~> 1.0"])
-  s.add_runtime_dependency("sys-proc", [">= 1.1.2", "~> 1.1"])
+  s.add_runtime_dependency("sys-proc", ["~> 1.1", ">= 1.1.2"])
 end
 
 # Local Variables:

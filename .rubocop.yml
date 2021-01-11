@@ -2,3 +2,7 @@
 inherit_gem:
   kamaze-project:
     - .rubocop.yml
+AllCops:
+  NewCops: disable
+Naming/FileName:
+  Exclude: [ lib/sv-utils.rb ]

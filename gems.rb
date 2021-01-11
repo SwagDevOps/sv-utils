@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
-# bundle install --path vendor/bundle --clean
-
+# ```sh
+# bundle config set clean 'true'
+# bundle config set path 'vendor/bundle'
+# bundle install
+# ```
 source 'https://rubygems.org'
+git_source(:github) { |name| "https://github.com/#{name}.git" }
 
 group :default do
   gem 'dry-inflector',  '~> 0.1'
@@ -11,14 +15,20 @@ group :default do
 end
 
 group :development do
-  gem 'kamaze-project', '~> 1.0', '>= 1.0.3'
+  { github: 'SwagDevOps/kamaze-project', branch: 'develop' }.tap do |options|
+    gem(*['kamaze-project'].concat([options]))
+  end
+
   gem 'listen', '~> 3.1'
+  gem 'rake', '~> 13.0'
   gem 'rubocop', '~> 0.66'
-  # repl ---------------------------------
+  gem 'rugged', '~> 1.0'
+  # repl ------------------------------------------------------------
   gem 'interesting_methods', '~> 0.1'
   gem 'pry', '~> 0.12'
-  gem 'pry-coolline', '~> 0.2'
-  # doc ----------------------------------
+end
+
+group :doc do
   gem 'github-markup', '~> 3.0'
   gem 'redcarpet', '~> 3.4'
   gem 'yard', '~> 0.9'
