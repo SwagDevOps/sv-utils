@@ -19,7 +19,7 @@ group :development do
     gem(*['kamaze-project'].concat([options]))
   end
 
-  gem 'listen', '~> 3.1'
+  gem 'listen', '~> 3.4'
   gem 'rake', '~> 13.0'
   gem 'rubocop', '~> 0.66'
   gem 'rugged', '~> 1.0'
