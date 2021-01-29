@@ -21,7 +21,7 @@ group :development do
 
   gem 'listen', '~> 3.1'
   gem 'rake', '~> 13.0'
-  gem 'rubocop', '~> 0.66'
+  gem 'rubocop', '~> 1.9'
   gem 'rugged', '~> 1.0'
   # repl ------------------------------------------------------------
   gem 'interesting_methods', '~> 0.1'
