@@ -6,16 +6,14 @@
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-require_relative '../sv/utils'
-
-# rubocop:disable Style/Documentation
-
 # noinspection RubyClassModuleNamingConvention
 unless Object.const_defined?(:Sv)
+  # Module (root namespace)
   module Sv
   end
 end
 
+# Module namespace
 module Sv::Utils
   {
     VERSION: 'version',
@@ -32,56 +30,9 @@ module Sv::Utils
     Concern: 'concern',
     Empty: 'empty'
   }.each { |k, v| autoload(k, "#{__dir__}/utils/#{v}") }
-end
 
-module Sv::Utils
-  class << self
-    protected
-
-    # @return [Boolean]
-    def bundled?
-      [%w[gems.rb gems.locked], %w[Gemfile Gemfile.lock]]
-        .map { |m| m.map { |fname| bundle_base.join(fname).file? }.keep_if { |v| v == true }.size >= 2 }
-        .include?(true)
-    end
-
-    # @see https://bundler.io/man/bundle-install.1.html
-    #
-    # @return [Boolean]
-    def standalone?
-      standalone_setupfile.file?
-    end
-
-    # Load standalone setup if present
-    #
-    # @return [Boolean]
-    def standalone!
-      # noinspection RubyResolve
-      standalone?.tap { |b| require standalone_setupfile if b }
-    end
-
-    # @return [Pathname]
-    def bundle_base
-      Pathname.new(__dir__).join('..', '..')
-    end
-
-    # @api private
-    #
-    # @return [Pathname]
-    def standalone_setupfile
-      bundle_base.join('bundle', 'bundler', 'setup.rb')
-    end
-  end
-
-  unless standalone!
-    if bundled?
-      require 'bundler/setup'
-
-      if Gem::Specification.find_all_by_name('kamaze-project').any?
-        require 'kamaze/project/core_ext/pp'
-      end
-    end
+  autoload(:Pathname, 'pathname')
+  Pathname.new(__dir__).join('utils/bundled.rb').yield_self do |file|
+    self.instance_eval(file.read, file.to_path)
   end
 end
-
-# rubocop:enable Style/Documentation
