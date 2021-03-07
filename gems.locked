@@ -25,7 +25,7 @@ GEM
     diff-lcs (1.4.4)
     dotenv (2.7.6)
     dry-inflector (0.2.0)
-    ffi (1.14.2)
+    ffi (1.15.0)
     github-markup (3.0.5)
     interesting_methods (0.1.2)
     kamaze-version (1.0.2)
