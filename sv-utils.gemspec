@@ -20,17 +20,43 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 2.5.0"
   s.require_paths = ["lib"]
   s.bindir        = "bin"
-  s.executables   = Dir.glob([s.bindir, "/*"].join)
-                       .select { |f| File.file?(f) and File.executable?(f) }
-                       .map { |f| File.basename(f) }
-  s.files = [
+  s.executables   = [
+    "svctl",
+    "svrun",
+  ]
+  s.files         = [
     ".yardopts",
-    s.require_paths.map { |rp| [rp, "/**/*.rb"].join },
-    s.require_paths.map { |rp| [rp, "/**/*.yml"].join },
-  ].flatten
-   .map { |m| Dir.glob(m) }
-   .flatten
-   .push(*s.executables.map { |f| [s.bindir, f].join("/") })
+    "README.md",
+    "bin/svctl",
+    "bin/svrun",
+    "lib/sv-utils.rb",
+    "lib/sv/utils.rb",
+    "lib/sv/utils/bundled.rb",
+    "lib/sv/utils/cli.rb",
+    "lib/sv/utils/cli/command.rb",
+    "lib/sv/utils/cli/command/configurable.rb",
+    "lib/sv/utils/cli/commands.rb",
+    "lib/sv/utils/cli/commands/control.rb",
+    "lib/sv/utils/cli/commands/runner.rb",
+    "lib/sv/utils/cli/empty.rb",
+    "lib/sv/utils/concern.rb",
+    "lib/sv/utils/concern/env.rb",
+    "lib/sv/utils/config.rb",
+    "lib/sv/utils/configurable.rb",
+    "lib/sv/utils/configurable/command.rb",
+    "lib/sv/utils/control.rb",
+    "lib/sv/utils/control/actionable.rb",
+    "lib/sv/utils/dsl.rb",
+    "lib/sv/utils/loggerd.rb",
+    "lib/sv/utils/service.rb",
+    "lib/sv/utils/shell.rb",
+    "lib/sv/utils/shell/command.rb",
+    "lib/sv/utils/shell/exceptions.rb",
+    "lib/sv/utils/shell/result.rb",
+    "lib/sv/utils/suid.rb",
+    "lib/sv/utils/version.rb",
+    "lib/sv/utils/version.yml",
+  ]
 
   s.add_runtime_dependency("dry-inflector", ["~> 0.1"])
   s.add_runtime_dependency("kamaze-version", ["~> 1.0"])
