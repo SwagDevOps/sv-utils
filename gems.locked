@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/SwagDevOps/kamaze-project.git
-  revision: 522c4114ba0cc071c01c2f4d9bcee8e9bda179f7
+  revision: 83dc8cfd8edbf853b7a2635afb5c928a1e197782
   branch: develop
   specs:
     kamaze-project (1.1.0)
@@ -30,12 +30,12 @@ GEM
     interesting_methods (0.1.2)
     kamaze-version (1.0.2)
       dry-inflector (~> 0.1)
-    listen (3.4.1)
+    listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     method_source (1.0.0)
     parallel (1.20.1)
-    parser (3.0.0.0)
+    parser (3.0.1.0)
       ast (~> 2.4.1)
     pastel (0.8.0)
       tty-color (~> 0.5)
@@ -50,7 +50,7 @@ GEM
       ffi (~> 1.0)
     redcarpet (3.5.1)
     regexp_parser (2.1.1)
-    rexml (3.2.4)
+    rexml (3.2.5)
     rspec (3.10.0)
       rspec-core (~> 3.10.0)
       rspec-expectations (~> 3.10.0)
@@ -64,7 +64,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
     rspec-support (3.10.2)
-    rubocop (1.11.0)
+    rubocop (1.12.1)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
