@@ -17,6 +17,7 @@ end
 module Sv::Utils
   {
     VERSION: 'version',
+    Bundleable: 'bundleable',
     Config: 'config',
     Configurable: 'configurable',
     Util: 'util',
@@ -31,8 +32,5 @@ module Sv::Utils
     Empty: 'empty'
   }.each { |k, v| autoload(k, "#{__dir__}/utils/#{v}") }
 
-  autoload(:Pathname, 'pathname')
-  Pathname.new(__dir__).join('utils/bundled.rb').yield_self do |file|
-    self.instance_eval(file.read, file.to_path)
-  end
+  include(Bundleable)
 end
