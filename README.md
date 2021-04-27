@@ -55,7 +55,7 @@ service('daemon').call
 loggerd.call
 ```
 
-Moreover, options as ``:user`` and ``group`` are supported
+Moreover, options as ``:user`` and ``:group`` are supported
 by ``loggerd`` and ``service`` methods, as:
 
 ```ruby

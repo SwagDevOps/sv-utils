@@ -2,6 +2,14 @@
 # vim: ai ts=2 sts=2 et sw=2 ft=ruby
 # rubocop:disable all
 <?rb
+@files = [
+    '.yardopts',
+    'README.md',
+    'bin/*',
+    'lib/**/*.rb',
+    'lib/**/version.yml'
+].map { |m| Dir.glob(m) }.flatten.keep_if { |f| File.file?(f) }.sort
+
 singleton_class.__send__(:define_method, :quote) do |input|
   input.to_s.inspect
 end
@@ -25,17 +33,16 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 2.5.0"
   s.require_paths = ["lib"]
   s.bindir        = "bin"
-  s.executables   = Dir.glob([s.bindir, "/*"].join)
-                       .select { |f| File.file?(f) and File.executable?(f) }
-                       .map { |f| File.basename(f) }
-  s.files = [
-    ".yardopts",
-    s.require_paths.map { |rp| [rp, "/**/*.rb"].join },
-    s.require_paths.map { |rp| [rp, "/**/*.yml"].join },
-  ].flatten
-   .map { |m| Dir.glob(m) }
-   .flatten
-   .push(*s.executables.map { |f| [s.bindir, f].join("/") })
+  s.executables   = [
+    <?rb for file in @files.dup.keep_if { |fp| /^bin\//.match(fp) }.map { |fp| fp.gsub(/^bin\//, '')} ?>
+    #{"%s," % quote(file)}
+    <?rb end ?>
+  ]
+  s.files         = [
+    <?rb for file in @files ?>
+    #{"%s," % quote(file)}
+    <?rb end ?>
+  ]
 
   #{@dependencies.keep(:runtime).to_s.lstrip}
 end
