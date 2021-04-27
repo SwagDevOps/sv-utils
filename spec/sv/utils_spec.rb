@@ -5,6 +5,7 @@ describe Sv::Utils, :utils do
 
   [
     :VERSION,
+    :Bundleable,
     :Config,
     :Configurable,
     :Util,
