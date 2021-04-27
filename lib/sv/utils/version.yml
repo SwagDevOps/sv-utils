@@ -1,10 +1,10 @@
 ---
 major: 0
 minor: 0
-patch: 2
+patch: 3
 authors: ['Dimitri Arrigoni']
 email: 'dimitri@arrigoni.me'
-date: '2021-01-11'
+date: '2021-04-28'
 summary: 'Runit (sv) utils.'
 description: 'Utils for sv (runit).'
 homepage: 'https://github.com/SwagDevOps/sv-utils'

@@ -4,8 +4,8 @@
 
 Gem::Specification.new do |s|
   s.name        = "sv-utils"
-  s.version     = "0.0.2"
-  s.date        = "2021-01-11"
+  s.version     = "0.0.3"
+  s.date        = "2021-04-28"
   s.summary     = "Runit (sv) utils."
   s.description = "Utils for sv (runit)."
 
