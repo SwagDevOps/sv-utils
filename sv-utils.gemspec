@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
     "bin/svrun",
     "lib/sv-utils.rb",
     "lib/sv/utils.rb",
-    "lib/sv/utils/bundled.rb",
+    "lib/sv/utils/bundleable.rb",
     "lib/sv/utils/cli.rb",
     "lib/sv/utils/cli/command.rb",
     "lib/sv/utils/cli/command/configurable.rb",
