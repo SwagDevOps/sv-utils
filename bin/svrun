@@ -10,6 +10,7 @@
 Warning[:deprecated] = true if Warning.respond_to?(:[]=)
 
 File.new("#{__dir__}/../lib/sv-utils.rb").tap do |file|
+  # noinspection RubyResolve
   require_relative file if File.file?(file)
 end
 
