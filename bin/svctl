@@ -7,12 +7,12 @@
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-require 'pathname'
+Warning[:deprecated] = true if Warning.respond_to?(:[]=)
 
-Pathname.new(__dir__).join('..', 'lib', 'sv-utils.rb').tap do |file|
-  require_relative file if file.file?
+File.new("#{__dir__}/../lib/sv-utils.rb").tap do |file|
+  require_relative file if File.file?(file)
 end
 
-require 'sv/utils/cli'
+require 'sv/utils'
 
 Sv::Utils::CLI.call(:control)
