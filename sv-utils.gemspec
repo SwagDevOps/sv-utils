@@ -4,8 +4,8 @@
 
 Gem::Specification.new do |s|
   s.name        = "sv-utils"
-  s.version     = "0.0.3"
-  s.date        = "2021-04-28"
+  s.version     = "0.0.4"
+  s.date        = "2021-05-21"
   s.summary     = "Runit (sv) utils."
   s.description = "Utils for sv (runit)."
 
@@ -14,9 +14,6 @@ Gem::Specification.new do |s|
   s.email       = "dimitri@arrigoni.me"
   s.homepage    = "https://github.com/SwagDevOps/sv-utils"
 
-  # MUST follow the higher required_ruby_version
-  # requires version >= 2.3.0 due to safe navigation operator &
-  # requires version >= 2.5.0 due to yield_self
   s.required_ruby_version = ">= 2.5.0"
   s.require_paths = ["lib"]
   s.bindir        = "bin"
