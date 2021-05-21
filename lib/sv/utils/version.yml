@@ -1,14 +1,14 @@
 ---
 major: 0
 minor: 0
-patch: 3
+patch: 4
 # MUST follow the higher required_ruby_version
 # requires version >= 2.3.0 due to safe navigation operator &
 # requires version >= 2.5.0 due to yield_self
 required_ruby_version: '>= 2.5.0'
 authors: ['Dimitri Arrigoni']
 email: 'dimitri@arrigoni.me'
-date: '2021-04-28'
+date: '2021-05-21'
 summary: 'Runit (sv) utils.'
 description: 'Utils for sv (runit).'
 homepage: 'https://github.com/SwagDevOps/sv-utils'
