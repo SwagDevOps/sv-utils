@@ -96,7 +96,7 @@ GEM
     tty-screen (0.8.1)
     unicode-display_width (2.0.0)
     wisper (2.0.1)
-    yard (0.9.26)
+    yard (0.9.36)
 
 PLATFORMS
   ruby
